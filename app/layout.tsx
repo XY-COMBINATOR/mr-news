@@ -171,12 +171,12 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Preconnect for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
 
-        {/* Google Fonts */}
+        {/* Fontshare: Switzer + Sentient */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=sentient@400i&display=swap"
           rel="stylesheet"
         />
 
@@ -187,8 +187,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
 
         {/* Theme colour for browser chrome */}
-        <meta name="theme-color" content="#e8ddc2" />
-        <meta name="msapplication-TileColor" content="#e8ddc2" />
+        <meta name="theme-color" content="#101012" />
+        <meta name="msapplication-TileColor" content="#101012" />
 
         {/* JSON-LD structured data */}
         <script

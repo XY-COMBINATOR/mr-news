@@ -1,369 +1,396 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { MobileNav } from './components/MobileNav';
-import { AnimatedCounters } from './components/AnimatedCounters';
 import { ReadingMachineDemo } from './components/ReadingMachineDemo';
 import { ClockSelector } from './components/ClockSelector';
 import { ReportPanelModal } from './components/ReportPanelModal';
-import { ScrollReveal } from './components/ScrollReveal';
-import { MagneticButtons } from './components/MagneticButtons';
-import { Dateline } from './components/Dateline';
+
+/* ASCII art for hero — MR NEWS styled */
+const ASCII_ART = `                ...                    .:.::-::...                  ..--==++xxx++==--::..                                           ..::--==++x+x++==--...                  ..::-::.:.                   .. .               
+               . .                   . ..:::.:..                 ..::-=+++++==--::..                                                     ..::--==+++++=-::..                 ....:::.. .                   . .              
+                .                   ..:::::..                  .::--==+++==--.:..                                                           ..::--==++++=--::.                 ...:::.:..                   .               
+                                   ....:....                 ..::-=+====::..                                                                     ..::==+====::..                 ..:.:.:..                                  
+                                  ..:::.:..                .::--==+==--::.                        ....:.::::-:-:-::::.:....                        .::--==+==--::.                ..:.:.:..                                 
+                                 ....:..                 ..::--===--::                       ..::-:-=+=++xxxxXxXxxxx++====:-::..                       .:--===--::..                 ..:.:..                                
+                                ..:.:..                 ..:-=-=--::..                   ..::--++xxX###88@8@@@@@@@@@@@88##XXxx++--::..                   ..::--=-=-:..                 ..:.:..                               
+                               .......                 ..:----::..                   ..::==xxX#8#88@8@8888#8#8#8#8#8888@8@88#8#Xxx==::..                   ..::----:..                 .......                              
+                              ..:....                .::-----::..                 ..--=+XX##888#8##XXxx++++=+===+=+=++xxXX##88888##XX+=--..                 ..::-----::.                ....:..                             
+                             . ... .               ..::-:-::..                 ..:-=+xx#####XX++==--::.:...... ......:.::--==++XX#####xx+=-:..                 ..::-:-::..               . ... .                            
+                            .....                 ..::-:-::..                .::==xxXX#XXx+==--::..                       ..:.--==+xXX#XXxx==::.                ..::-:-::..                ......                           
+                           . ...                 ..:.:::....               ..:-++xxXxx+=--:. .                                 . .:--=+xxXxx+=--..               ..:.:::.:..                 ... .                          
+                            ...                 ..::-::.:.               .::==+xxxx+=--...                                          .:--=+xxxx+==::.               .::::-::..                .....                          
+                           . .                 ..:.:::..               ..::==+++==-:..                                                 ..--==+++==::..               ..:::....                 . .                          
+                          ...                  ...:::..               ..:-==+=+--::.                                                      ::--+++==-:..               ..:.:...                  . .                         
+                           .                   ..:....               ..--===--::..                     . . . ... . . .                     ..::--===-:..               ....:..                   .                          
+                                             ...:....               .:--===--:.                   ....:.:::::::::::::.:....                  ...--===--:.               ....:..                                             
+                                             ..... .               ..-:---::..                 ....:::::::::::.:::::::::::....                 ..::---::..               . .....                                            
+                                            ......                ..::---::.                ..:.:.:::.:....       ....:.:.:::.:..                .::---::..                ......                                           
+                                             . .                 ..:::::..                 ....:....                     .........                 ..::-::..                 . .                                            
+                                            ...                 ..:::::..                ...:....                           ....:...                ..:::::..                ....                                           
+                                             .                  ...:.:..               . .....                                 ..... .               ....:...                  .                                            
+                                                                ..:....               .....                                       ... .               ....:..                                                               
+                                                               . ...                   .                                             .                   ... .                                                              
+                                                                ...                                                                                      .....                                                              
+                                                                 .                                                                                         .                                                                `;
 
 export default function HomePage() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
 
-      {/* ── STICKY NAVBAR ── */}
-      <nav className="site-nav" aria-label="Main navigation">
-        <p className="site-nav__logo">MR<span>.</span>NEWS</p>
-        <div className="site-nav__links">
-          <a href="#how">How It Works</a>
-          <a href="#demo">Demo</a>
-          <a href="#features">Features</a>
-          <a href="#voices">Readers</a>
-        </div>
-        <Link href="/login" className="site-nav__cta" id="navRegister">
-          Subscribe Free →
+      {/* ── TOPBAR ── */}
+      <header className="topbar">
+        <Link href="/" className="topbar__brand" aria-label="MR NEWS home">
+          <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="3.2" />
+            <ellipse cx="50" cy="50" rx="20" ry="46" stroke="currentColor" strokeWidth="2" />
+            <line x1="4" y1="50" x2="96" y2="50" stroke="currentColor" strokeWidth="2" />
+          </svg>
+          <span>MR NEWS</span>
         </Link>
-      </nav>
 
-      <div className="paper-wrap">
-        <div className="paper-sheet">
-          <div className="paper-grain" aria-hidden="true" />
-          <div className="paper-sheet__inner">
+        <nav className="topbar__nav" aria-label="Main navigation">
+          <a href="#how" className="topbar__link">How It Works</a>
+          <a href="#features" className="topbar__link">Features</a>
+          <a href="#demo" className="topbar__link">Demo</a>
+          <a href="#delivery" className="topbar__link">Delivery</a>
+          <a href="#voices" className="topbar__link">Readers</a>
+        </nav>
 
-            {/* MASTHEAD */}
-            <header className="masthead">
-              <div className="masthead__top">
-                <span className="left">Est. 2024</span>
-                <span className="mid">The newsletter that reads the news for you</span>
-                <span className="right">
-                  <Link href="/login" className="register-btn" aria-label="Register for MR News">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                      <path d="M5 12h13M13 6l6 6-6 6" />
-                    </svg>
-                    Register
-                  </Link>
-                </span>
-              </div>
-              {/* DATELINE */}
-              <Dateline />
+        <Link href="/login" className="topbar__cta" id="navSubscribe">Subscribe Free</Link>
 
-              {/* BRAND */}
-              <div className="brand">
-                <img
-                  src="/assets/brand/mr_news_logo.svg"
-                  alt="MR News logo"
-                  className="brand__logo"
-                />
-                <h1 className="brand__text" aria-label="MR NEWS">
-                  <span aria-hidden="true">MR</span>
-                  <span className="brand__globe" aria-hidden="true">
-                    <svg viewBox="0 0 100 100" fill="none">
-                      <circle cx="50" cy="50" r="46" stroke="#1a1510" strokeWidth="3.2" />
-                      <g className="meridians">
-                        <ellipse cx="50" cy="50" rx="20" ry="46" stroke="#1a1510" strokeWidth="2" />
-                        <ellipse cx="50" cy="50" rx="38" ry="46" stroke="#1a1510" strokeWidth="1.4" opacity=".5" />
-                        <line x1="4" y1="50" x2="96" y2="50" stroke="#1a1510" strokeWidth="2" />
-                        <path d="M12 28 Q50 40 88 28" stroke="#1a1510" strokeWidth="1.6" opacity=".7" />
-                        <path d="M12 72 Q50 60 88 72" stroke="#1a1510" strokeWidth="1.6" opacity=".7" />
-                        <path d="M28 20 Q40 44 34 80" stroke="#1a1510" strokeWidth="1.2" opacity=".4" />
-                        <path d="M66 18 Q56 44 64 82" stroke="#1a1510" strokeWidth="1.2" opacity=".4" />
-                      </g>
-                    </svg>
-                  </span>
-                  <span aria-hidden="true">NEWS</span>
-                </h1>
-                <p className="brand__tagline">Six Hundred Sources, One Page</p>
+        <div className="topbar__burger">
+          <button className="burger-btn" aria-label="Toggle menu">
+            <span className="burger-bars" aria-hidden="true">
+              <span /><span /><span />
+            </span>
+          </button>
+        </div>
+      </header>
 
-                <div className="brand__sides">
-                  <div className="brand__side left">
-                    Truth<br />Summarised<br />Daily.
-                    <em>Less noise.<br />More insight.</em>
-                  </div>
-                  <div />
-                  <div className="brand__side right">
-                    Powered<br />by AI.<br />Curated for Humans.
-                    <em>Same world.<br />A clearer view.</em>
-                  </div>
-                </div>
-              </div>
+      {/* ── MAIN ── */}
+      <main className="container" id="main">
 
-              <MobileNav />
+        {/* HERO */}
+        <header className="hero">
+          <div className="hero-art" aria-hidden="true">
+            <pre>{ASCII_ART}</pre>
+          </div>
+          <div className="hero-content">
+            <svg className="hero-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <circle cx="60" cy="60" r="54" stroke="url(#hg)" strokeWidth="3" />
+              <ellipse cx="60" cy="60" rx="24" ry="54" stroke="url(#hg)" strokeWidth="2" />
+              <line x1="6" y1="60" x2="114" y2="60" stroke="url(#hg)" strokeWidth="2" />
+              <path d="M16 35 Q60 48 104 35" stroke="url(#hg)" strokeWidth="1.6" opacity=".7" />
+              <path d="M16 85 Q60 72 104 85" stroke="url(#hg)" strokeWidth="1.6" opacity=".7" />
+              <defs>
+                <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="var(--acc)" />
+                  <stop offset="100%" stopColor="var(--acc-deep)" />
+                </linearGradient>
+              </defs>
+            </svg>
 
-              {/* WIRE TICKER */}
-              <div className="wire" aria-hidden="true">
-                <div className="wire__track">
-                  <div className="wire__set">
-                    <b>Live</b> 600 sources scanned continuously
-                    <i>&#9670;</i> Duplicates removed by semantic similarity
-                    <i>&#9670;</i> Ranked by real world impact
-                    <i>&#9670;</i> Written by language models, checked by people
-                    <i>&#9670;</i> Delivered at your chosen hour
-                    <i>&#9670;</i> 61,000 readers and counting
-                    <i>&#9670;</i>
-                  </div>
-                  <div className="wire__set">
-                    <b>Live</b> 600 sources scanned continuously
-                    <i>&#9670;</i> Duplicates removed by semantic similarity
-                    <i>&#9670;</i> Ranked by real world impact
-                    <i>&#9670;</i> Written by language models, checked by people
-                    <i>&#9670;</i> Delivered at your chosen hour
-                    <i>&#9670;</i> 61,000 readers and counting
-                    <i>&#9670;</i>
-                  </div>
-                </div>
-              </div>
-            </header>
+            <p className="hero-eyebrow">AI-powered · 600 sources · Delivered daily</p>
 
-            <main id="main">
-              {/* VERTICAL SECTION LABEL */}
-              <div className="vert-label" aria-hidden="true"><span>MR NEWS ✦ DAILY BRIEFING ✦ EST. 2024</span></div>
+            <h1 className="hero-title">
+              The AI newsletter that<br /><em>reads itself.</em>
+            </h1>
 
-              {/* HERO */}
-              {/* SEC NUM */}
-              <section className="hero" data-sec="01">
-                <div className="reveal is-in">
-                  <p className="hero__eyebrow">The Daily Briefing</p>
-                </div>
-                <h2 className="hero__title reveal is-in" style={{ '--d': '.06s' } as React.CSSProperties}>
-                  The AI newsletter<br />that <em>reads itself</em>
-                </h2>
-                <div className="hero__rule reveal is-in" style={{ '--d': '.1s' } as React.CSSProperties} />
-                <p className="hero__deck reveal is-in" style={{ '--d': '.14s' } as React.CSSProperties}>
-                  We point an army of <b>language models</b> at six hundred news sources every night.
-                  They read everything, throw away duplicates, rank what matters, and write a
-                  briefing you can finish in five minutes.
-                </p>
-              </section>
+            <p className="hero-desc">
+              We point an army of language models at six hundred news sources every night.
+              They read everything, throw away duplicates, rank what matters, and write a
+              briefing you can finish in five minutes.
+            </p>
 
-              {/* STATS */}
-              <AnimatedCounters />
+            <p className="hero-note">
+              No subscription fee. No ads. No trackers. Free forever.<br />
+              <strong>Your inbox. Your schedule. Your topics. Your briefing.</strong>
+            </p>
 
-              {/* DEMO */}
-              <section className="section" id="demo" data-sec="02">
-                <header className="sec-head reveal is-in">
-                  <p className="sec-head__kicker">Fig. 1 / How the Machine Reads</p>
-                  <h2 className="sec-head__title">Watch a <em>headline</em> get read</h2>
-                  <p className="sec-head__sub">See what our models see, in real time.</p>
-                </header>
-                <ReadingMachineDemo />
-              </section>
+            <div className="hero-actions">
+              <Link href="/login" className="btn btn-primary" id="heroSubscribe">Get started</Link>
+              <a href="#how" className="btn btn-ghost">How it works</a>
+              <a href="#voices" className="btn btn-ghost">What readers say</a>
+            </div>
+          </div>
+        </header>
 
-              {/* HOW IT WORKS */}
-              <section className="section" id="how" data-sec="03">
-                <div className="rule-orn" aria-hidden="true"><span /></div>
-                <header className="sec-head reveal is-in">
-                  <p className="sec-head__kicker">What MR News Actually Does</p>
-                  <h2 className="sec-head__title">We built a <em>reading machine</em> for the AI era</h2>
-                  <p className="sec-head__sub">Because no human should have to read 600 articles a day. That is a robot&apos;s job.</p>
-                </header>
-                <div className="pillars">
-                  <article className="pillar reveal is-in">
-                    <span className="pillar__num">I</span>
-                    <svg className="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M3 4h18v14H3z" /><path d="M7 8h10M7 12h7" /><path d="M8 18l-2 3M16 18l2 3" />
-                    </svg>
-                    <h3 className="pillar__title">Reads Everything</h3>
-                    <p className="pillar__body">Wire services, research preprints, regulator filings, press releases, social posts. <b>600+ per night.</b> The models do not get tired. They do not skim.</p>
-                  </article>
-                  <article className="pillar reveal is-in" style={{ '--d': '.08s' } as React.CSSProperties}>
-                    <span className="pillar__num">II</span>
-                    <svg className="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <circle cx="12" cy="12" r="9" /><path d="M12 3v9l7 4" />
-                    </svg>
-                    <h3 className="pillar__title">Decides What Matters</h3>
-                    <p className="pillar__body">Every candidate story is scored on <b>impact, novelty, and credibility</b>. Only seven make the cut.</p>
-                  </article>
-                  <article className="pillar reveal is-in" style={{ '--d': '.16s' } as React.CSSProperties}>
-                    <span className="pillar__num">III</span>
-                    <svg className="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M4 4h11l5 5v11H4z" /><path d="M15 4v5h5M8 13h8M8 17h5" />
-                    </svg>
-                    <h3 className="pillar__title">Writes It Plainly</h3>
-                    <p className="pillar__body">No jargon. No hedging. Then <b>a human editor reads the whole issue</b> before it goes out.</p>
-                  </article>
-                </div>
-              </section>
+        <div className="rail">
 
-              {/* FEATURES */}
-              <section className="section" id="features" data-sec="04">
-                <header className="sec-head reveal is-in">
-                  <p className="sec-head__kicker">Features</p>
-                  <h2 className="sec-head__title">Everything a <em>serious briefing</em> should be</h2>
-                </header>
-                <div className="features">
-                  <div className="feat reveal is-in"><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg><h4 className="feat__title">Pick Your Hour</h4><p className="feat__body">6 a.m. for commuters. Noon for night owls. Any hour you like.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.04s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4h16v16H4z" /><path d="M9 9h6M9 13h6M9 17h3" /></svg><h4 className="feat__title">Pick Your Topics</h4><p className="feat__body">Policy, chips, labs, funding, safety, science. You choose.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.08s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 12h6l3-6 3 12 3-6h3" /></svg><h4 className="feat__title">Three Lengths</h4><p className="feat__body">Skim in 1 minute, Standard in 5, or Deep in 12.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.12s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" /></svg><h4 className="feat__title">Corrections First</h4><p className="feat__body">When we get it wrong, the fix runs at the top. Every time.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.16s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.5 3 14 0 18" /></svg><h4 className="feat__title">Global Sources</h4><p className="feat__body">English, Mandarin, German, French, Japanese, all read natively.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.2s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="6" width="18" height="14" rx="2" /><path d="M3 10h18M8 6V4M16 6V4" /></svg><h4 className="feat__title">Archive Access</h4><p className="feat__body">Every issue ever sent, searchable.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.24s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></svg><h4 className="feat__title">Zero Trackers</h4><p className="feat__body">No pixels, no beacons, no ads.</p></div>
-                  <div className="feat reveal is-in" style={{ '--d': '.28s' } as React.CSSProperties}><svg className="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M8 12l3 3 5-6" /></svg><h4 className="feat__title">Free Forever</h4><p className="feat__body">Funded by a small group of patient readers.</p></div>
-                </div>
-              </section>
-
-              {/* DELIVERY */}
-              <section className="section" id="delivery" data-sec="05">
-                <header className="sec-head reveal is-in">
-                  <p className="sec-head__kicker">Delivery</p>
-                  <h2 className="sec-head__title">The briefing arrives <em>when you say so</em></h2>
-                </header>
-                <div className="delivery">
-                  <div className="delivery__copy reveal is-in">
-                    <p className="kicker">Your Morning, Your Rules</p>
-                    <h3>You pick the <em>hour</em>, the <em>length</em>, the <em>topics</em></h3>
-                    <p>Registering takes one click. After that, you are in the driver&apos;s seat.</p>
-                    <ul className="delivery__list">
-                      <li><span className="check">&#10003;</span><span>Choose a delivery time that matches your morning</span></li>
-                      <li><span className="check">&#10003;</span><span>Toggle sections on or off: policy, chips, science, funding</span></li>
-                      <li><span className="check">&#10003;</span><span>Switch reading length any day, instantly</span></li>
-                      <li><span className="check">&#10003;</span><span>Pause for a week without losing your place</span></li>
-                    </ul>
-                  </div>
-                  <ClockSelector />
-                </div>
-              </section>
-
-              {/* READERS */}
-              <section className="section" id="voices" data-sec="06">
-                <div className="rule-orn" aria-hidden="true"><span /></div>
-                <header className="sec-head reveal is-in">
-                  <p className="sec-head__kicker">Readers&apos; Letters</p>
-                  <h2 className="sec-head__title">What people say <em>before coffee</em></h2>
-                </header>
-                <div className="quotes">
-                  <article className="quote reveal is-in">
-                    <div className="quote__head"><span>From the Desk Of</span><span>Sept 14</span></div>
-                    <p className="quote__body">I used to spend forty minutes every morning opening twelve tabs. Now I read MR News in five and I actually understand what I read.</p>
-                    <p className="quote__sign">Priya N.<b>Product Lead, Bangalore</b></p>
-                  </article>
-                  <article className="quote reveal is-in" style={{ '--d': '.08s' } as React.CSSProperties}>
-                    <div className="quote__head"><span>From the Desk Of</span><span>Sept 12</span></div>
-                    <p className="quote__body">The corrections column alone is worth registering. No other AI newsletter admits when it gets something wrong.</p>
-                    <p className="quote__sign">Marcus H.<b>Policy Researcher, Brussels</b></p>
-                  </article>
-                  <article className="quote reveal is-in" style={{ '--d': '.16s' } as React.CSSProperties}>
-                    <div className="quote__head"><span>From the Desk Of</span><span>Sept 10</span></div>
-                    <p className="quote__body">I forwarded Wednesday&apos;s issue to my entire leadership team. For the first time we all walked in knowing the same facts.</p>
-                    <p className="quote__sign">Elena V.<b>VP Operations, Toronto</b></p>
-                  </article>
-                </div>
-              </section>
-
-              {/* UNCLE MASCOT */}
-              <section className="reveal is-in">
-                <div className="uncle-feature">
-                  <svg className="uncle-svg" viewBox="0 0 200 240" role="img" aria-label="Uncle mascot reading the newspaper">
-                    <g transform="translate(96,148) rotate(8)">
-                      <rect x="0" y="0" width="80" height="62" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.4" />
-                      <rect x="6" y="7" width="30" height="5" fill="#1a1510" />
-                      <rect x="6" y="17" width="68" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="6" y="23" width="68" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="6" y="29" width="54" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="6" y="35" width="62" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="6" y="41" width="46" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="6" y="47" width="58" height="2" fill="#1a1510" opacity=".55" />
-                      <rect x="44" y="7" width="28" height="8" fill="#7a2418" opacity=".7" />
-                    </g>
-                    <path d="M40 216 Q46 168 100 164 Q154 168 160 216 Z" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.6" />
-                    <path d="M82 168 L100 190 L118 168" fill="none" stroke="#1a1510" strokeWidth="2.4" />
-                    <path d="M100 190 L86 180 L86 198 Z" fill="#7a2418" stroke="#1a1510" strokeWidth="2" />
-                    <path d="M100 190 L114 180 L114 198 Z" fill="#7a2418" stroke="#1a1510" strokeWidth="2" />
-                    <circle cx="100" cy="190" r="4" fill="#1a1510" />
-                    <rect x="90" y="148" width="20" height="18" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.4" />
-                    <ellipse cx="45" cy="108" rx="9" ry="13" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.4" />
-                    <ellipse cx="155" cy="108" rx="9" ry="13" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.4" />
-                    <ellipse cx="100" cy="104" rx="53" ry="58" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.8" />
-                    <path d="M52 90 Q56 46 100 44 Q144 46 148 90 Q138 66 100 64 Q62 66 52 90 Z" fill="#1a1510" opacity=".92" />
-                    <path d="M64 82 Q76 74 88 81" stroke="#1a1510" strokeWidth="3.4" fill="none" strokeLinecap="round" />
-                    <path d="M112 81 Q124 74 136 82" stroke="#1a1510" strokeWidth="3.4" fill="none" strokeLinecap="round" />
-                    <circle cx="76" cy="104" r="19" fill="rgba(255,255,255,.35)" stroke="#1a1510" strokeWidth="3.2" />
-                    <circle cx="124" cy="104" r="19" fill="rgba(255,255,255,.35)" stroke="#1a1510" strokeWidth="3.2" />
-                    <path d="M95 104 Q100 100 105 104" stroke="#1a1510" strokeWidth="3.2" fill="none" />
-                    <line x1="57" y1="102" x2="44" y2="100" stroke="#1a1510" strokeWidth="2.6" />
-                    <line x1="143" y1="102" x2="156" y2="100" stroke="#1a1510" strokeWidth="2.6" />
-                    <circle cx="76" cy="105" r="4" fill="#1a1510" />
-                    <circle cx="124" cy="105" r="4" fill="#1a1510" />
-                    <ellipse className="lid" cx="76" cy="95" rx="19" ry="17" fill="#e8ddc2" stroke="#1a1510" strokeWidth="3.2" />
-                    <ellipse className="lid" cx="124" cy="95" rx="19" ry="17" fill="#e8ddc2" stroke="#1a1510" strokeWidth="3.2" />
-                    <path d="M100 110 Q96 122 100 124 Q104 122 100 110" fill="none" stroke="#1a1510" strokeWidth="2.6" strokeLinecap="round" />
-                    <g className="stache"><path d="M62 138 Q80 124 100 136 Q120 124 138 138 Q120 152 100 144 Q80 152 62 138 Z" fill="#1a1510" /></g>
-                    <path d="M88 151 Q100 158 112 151" fill="none" stroke="#1a1510" strokeWidth="2.4" strokeLinecap="round" />
-                    <ellipse cx="58" cy="128" rx="9" ry="5" fill="#7a2418" opacity=".18" />
-                    <ellipse cx="142" cy="128" rx="9" ry="5" fill="#7a2418" opacity=".18" />
-                    <g className="arm">
-                      <path d="M152 178 Q176 158 172 130" stroke="#1a1510" strokeWidth="3" fill="none" strokeLinecap="round" />
-                      <circle cx="172" cy="126" r="9" fill="#e8ddc2" stroke="#1a1510" strokeWidth="2.6" />
-                    </g>
-                  </svg>
-                  <div className="uncle-copy">
-                    <p className="kicker">Our Editor at Large</p>
-                    <h3>Sit down. <em>I will read it to you.</em></h3>
-                    <p>Every newspaper needs a face. Ours is a retired editor with round glasses, a proper moustache, and strong opinions about the Oxford comma. He reads every issue before it ships.</p>
-                    <p>He believes the news should be calm, clear, and kind. That is why we never use clickbait, never overstate, and always publish a correction when we get something wrong.</p>
-                    <p className="uncle-copy__sign">The Uncle, Editor at Large</p>
-                  </div>
-                </div>
-              </section>
-
-              {/* QUIET CTA */}
-              <section className="quiet-cta reveal is-in">
-                <h2 className="quiet-cta__title">One page. Every morning.<br /><em>Written by machines, checked by people.</em></h2>
-                <p className="quiet-cta__sub">When you are ready, the register button at the top will take you there. One Google click and you are in.</p>
-                <Link href="/login" className="quiet-cta__link">
-                  Register to receive MR News
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
-                </Link>
-              </section>
-
-            </main>
-
-            {/* FOOTER */}
-            <footer className="foot">
-              <div className="rule-orn" aria-hidden="true"><span /></div>
-              <div className="foot__top">
-                <div>
-                  <p className="foot__logo">MR News</p>
-                  <p className="foot__tag">Written by machines, checked by people</p>
-                </div>
-                <nav className="foot__cols" aria-label="Footer">
-                  <div>
-                    <h4>The Paper</h4>
-                    <Link href="#how">How It Works</Link>
-                    <Link href="#demo">See It Read</Link>
-                    <Link href="#features">Features</Link>
-                  </div>
-                  <div>
-                    <h4>Account</h4>
-                    <Link href="/login">Register</Link>
-                    <a href="#" id="footReport">Report a Problem</a>
-                  </div>
-                  <div>
-                    <h4>Elsewhere</h4>
-                    <a href="#">RSS</a><a href="#">Mastodon</a><a href="#">Contact the Desk</a>
-                  </div>
-                </nav>
-              </div>
-              <p className="foot__legal">
-                <span>&copy; <span data-year>{new Date().getFullYear()}</span> MR News. All rights reserved.</span>
-                <span>Set in Playfair, Old Standard and IM Fell. <a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
+          {/* SUBSCRIBE BLOCK */}
+          <section className="subscribe-block" id="subscribe" aria-labelledby="sub-title">
+            <div className="subscribe-block__header">
+              <span className="subscribe-block__label">Subscribe</span>
+            </div>
+            <div className="subscribe-block__body">
+              <h2 className="subscribe-block__title" id="sub-title">
+                One click. Pick your <em>hour</em>.<br />Seven stories every morning.
+              </h2>
+              <p className="subscribe-block__desc">
+                Register with Google, choose what time you want the briefing,
+                toggle the topics you care about. That&apos;s it. One page, every morning.
               </p>
-            </footer>
+              <Link href="/login" className="btn btn-primary" id="subBtn" style={{maxWidth:'260px'}}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+                Subscribe free with Google
+              </Link>
+              <p className="subscribe-block__note">No credit card · No spam · Cancel any time</p>
+            </div>
+          </section>
 
+          {/* STATS */}
+          <div className="stats" aria-label="Key numbers">
+            <div className="stat">
+              <span className="stat__num">600+</span>
+              <span className="stat__lbl">Sources scanned</span>
+            </div>
+            <div className="stat">
+              <span className="stat__num">07</span>
+              <span className="stat__lbl">Stories per issue</span>
+            </div>
+            <div className="stat">
+              <span className="stat__num">05 min</span>
+              <span className="stat__lbl">Average read time</span>
+            </div>
+            <div className="stat">
+              <span className="stat__num">61K</span>
+              <span className="stat__lbl">Subscribers worldwide</span>
+            </div>
+          </div>
+
+          {/* HOW IT WORKS */}
+          <section id="how" aria-labelledby="how-title">
+            <div className="sec-hd">
+              <h2 className="sec-eyebrow" id="how-title">How It Works</h2>
+            </div>
+            <div className="pillars-grid">
+              <div className="pillar-card">
+                <span className="pillar-num">Step 01</span>
+                <div className="pillar-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                    <path d="M3 4h18v14H3z" /><path d="M7 8h10M7 12h7" /><path d="M8 18l-2 3M16 18l2 3" />
+                  </svg>
+                </div>
+                <h3 className="pillar-title">Reads Everything</h3>
+                <p className="pillar-body">Wire services, research preprints, regulator filings, press releases. <strong>600+ sources per night.</strong> The models do not get tired. They do not skim.</p>
+              </div>
+              <div className="pillar-card">
+                <span className="pillar-num">Step 02</span>
+                <div className="pillar-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" /><path d="M12 3v9l7 4" />
+                  </svg>
+                </div>
+                <h3 className="pillar-title">Decides What Matters</h3>
+                <p className="pillar-body">Every candidate story is scored on <strong>impact, novelty, and credibility.</strong> Only seven make the cut.</p>
+              </div>
+              <div className="pillar-card">
+                <span className="pillar-num">Step 03</span>
+                <div className="pillar-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                    <path d="M4 4h11l5 5v11H4z" /><path d="M15 4v5h5M8 13h8M8 17h5" />
+                  </svg>
+                </div>
+                <h3 className="pillar-title">Writes It Plainly</h3>
+                <p className="pillar-body">No jargon. No hedging. Then <strong>a human editor reads the whole issue</strong> before it goes out.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* DEMO */}
+          <section id="demo" aria-labelledby="demo-title">
+            <div className="sec-hd">
+              <h2 className="sec-eyebrow" id="demo-title">See It Read</h2>
+            </div>
+            <ReadingMachineDemo />
+          </section>
+
+          {/* FEATURES */}
+          <section id="features" aria-labelledby="features-title">
+            <div className="sec-hd">
+              <h2 className="sec-eyebrow" id="features-title">Features</h2>
+            </div>
+            <div className="features-grid">
+              {[
+                { icon: 'M12 7v5l3 2', circle: true, title: 'Pick Your Hour', desc: '6 a.m. for early risers. Noon for night owls. Any hour you like.' },
+                { icon: 'M4 4h16v16H4zM9 9h6M9 13h6M9 17h3', title: 'Pick Your Topics', desc: 'Policy, chips, labs, funding, safety, science. You choose.' },
+                { icon: 'M3 12h6l3-6 3 12 3-6h3', title: 'Three Lengths', desc: 'Skim in 1 min, Standard in 5, or Deep in 12.' },
+                { icon: 'M12 3l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z', title: 'Corrections First', desc: 'When we get it wrong, the fix runs at the top. Every time.' },
+                { icon: 'M12 3v9l7 4', circle: true, title: 'Global Sources', desc: 'English, Mandarin, German, French, Japanese — read natively.' },
+                { icon: 'M3 6h16v14H3zM3 10h16M8 6V4M16 6V4', title: 'Archive Access', desc: 'Every issue ever sent, searchable.' },
+                { icon: 'M12 3v12M7 10l5 5 5-5M5 21h14', title: 'Zero Trackers', desc: 'No pixels, no beacons, no ads.' },
+                { icon: 'M8 12l3 3 5-6', circle: true, title: 'Free Forever', desc: 'Funded by a small group of patient readers.' },
+                { icon: 'M4 4h11l5 5v11H4zM15 4v5h5M8 13h8M8 17h5', title: 'Human Reviewed', desc: 'Every issue reviewed by editors before send.' },
+              ].map(({ icon, circle, title, desc }) => (
+                <div className="feat-card" key={title}>
+                  <div className="feat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      {circle && <circle cx="12" cy="12" r="9" />}
+                      <path d={icon} />
+                    </svg>
+                  </div>
+                  <p className="feat-title">{title}</p>
+                  <p className="feat-desc">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* DELIVERY */}
+          <section id="delivery" aria-labelledby="delivery-title">
+            <div className="sec-hd">
+              <h2 className="sec-eyebrow" id="delivery-title">Delivery</h2>
+            </div>
+            <div className="delivery">
+              <div>
+                <p className="delivery__eyebrow">Your Morning, Your Rules</p>
+                <h3 className="delivery__title">You pick the <em>hour</em>, the <em>length</em>, the <em>topics</em></h3>
+                <p className="delivery__desc">Registering takes one click. After that, you are in the driver&apos;s seat.</p>
+                <ul className="delivery__list">
+                  <li className="delivery__item"><span className="delivery__check">✓</span><span>Choose a delivery time that matches your morning</span></li>
+                  <li className="delivery__item"><span className="delivery__check">✓</span><span>Toggle sections on or off: policy, chips, science, funding</span></li>
+                  <li className="delivery__item"><span className="delivery__check">✓</span><span>Switch reading length any day, instantly</span></li>
+                  <li className="delivery__item"><span className="delivery__check">✓</span><span>Pause for a week without losing your place</span></li>
+                </ul>
+              </div>
+              <ClockSelector />
+            </div>
+          </section>
+
+          {/* TESTIMONIALS */}
+          <section id="voices" aria-labelledby="voices-title">
+            <div className="sec-hd">
+              <h2 className="sec-eyebrow" id="voices-title">What People Say</h2>
+            </div>
+            <div className="testimonials">
+              <div className="testimonials-track">
+                <div className="t-row t-row-1" style={{'--t-dur': '120s'} as React.CSSProperties}>
+                  {[
+                    { q: 'I used to spend forty minutes every morning opening twelve tabs. Now I read MR NEWS in five and I actually understand what I read.', a: 'Priya N.', i: 'PN' },
+                    { q: 'The corrections column alone is worth subscribing. No other AI newsletter admits when it gets something wrong.', a: 'Marcus H.', i: 'MH' },
+                    { q: 'I forwarded Wednesday\'s issue to my entire leadership team. For the first time we all walked in knowing the same facts.', a: 'Elena V.', i: 'EV' },
+                    { q: 'Five minutes with MR NEWS replaces my entire morning scroll. The signal-to-noise ratio is unmatched.', a: 'David K.', i: 'DK' },
+                    { q: 'Finally, a newsletter that doesn\'t treat me like a click target. Clean, calm, informative.', a: 'Sarah L.', i: 'SL' },
+                    { q: 'I used to spend forty minutes every morning opening twelve tabs. Now I read MR NEWS in five and I actually understand what I read.', a: 'Priya N.', i: 'PN' },
+                    { q: 'The corrections column alone is worth subscribing. No other AI newsletter admits when it gets something wrong.', a: 'Marcus H.', i: 'MH' },
+                    { q: 'I forwarded Wednesday\'s issue to my entire leadership team. For the first time we all walked in knowing the same facts.', a: 'Elena V.', i: 'EV' },
+                    { q: 'Five minutes with MR NEWS replaces my entire morning scroll. The signal-to-noise ratio is unmatched.', a: 'David K.', i: 'DK' },
+                    { q: 'Finally, a newsletter that doesn\'t treat me like a click target. Clean, calm, informative.', a: 'Sarah L.', i: 'SL' },
+                  ].map(({ q, a, i }, idx) => (
+                    <div className="t-card" key={idx}>
+                      <span className="t-avatar">{i}</span>
+                      <div className="t-content">
+                        <p className="t-quote">&ldquo;{q}&rdquo;</p>
+                        <span className="t-author">{a}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="t-row t-row-2" style={{'--t-dur': '140s'} as React.CSSProperties}>
+                  {[
+                    { q: 'The global coverage is what sold me. They read sources in six languages and I get it all in English in five minutes.', a: 'Tomás R.', i: 'TR' },
+                    { q: 'I\'m a policy researcher. The fact that they cite original filings instead of just parroting press releases is rare.', a: 'Aisha M.', i: 'AM' },
+                    { q: 'I\'ve tried every AI newsletter. MR NEWS is the only one that doesn\'t feel like it was written by a chatbot.', a: 'James W.', i: 'JW' },
+                    { q: 'My team switched from three different news services to just MR NEWS. Saves us hours every week.', a: 'Lin C.', i: 'LC' },
+                    { q: 'The "Deep" reading mode is incredible — 12 minutes of real analysis, not just summaries.', a: 'Freya B.', i: 'FB' },
+                    { q: 'The global coverage is what sold me. They read sources in six languages and I get it all in English in five minutes.', a: 'Tomás R.', i: 'TR' },
+                    { q: 'I\'m a policy researcher. The fact that they cite original filings instead of just parroting press releases is rare.', a: 'Aisha M.', i: 'AM' },
+                    { q: 'I\'ve tried every AI newsletter. MR NEWS is the only one that doesn\'t feel like it was written by a chatbot.', a: 'James W.', i: 'JW' },
+                    { q: 'My team switched from three different news services to just MR NEWS. Saves us hours every week.', a: 'Lin C.', i: 'LC' },
+                    { q: 'The "Deep" reading mode is incredible — 12 minutes of real analysis, not just summaries.', a: 'Freya B.', i: 'FB' },
+                  ].map(({ q, a, i }, idx) => (
+                    <div className="t-card" key={idx}>
+                      <span className="t-avatar">{i}</span>
+                      <div className="t-content">
+                        <p className="t-quote">&ldquo;{q}&rdquo;</p>
+                        <span className="t-author">{a}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA GRID */}
+          <section aria-label="Quick links">
+            <div className="cta-grid">
+              <Link href="/login" className="cta-cell">
+                <svg className="cta-cell__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path d="M5 12h13M13 6l6 6-6 6" />
+                </svg>
+                <div>
+                  <p className="cta-cell__label">Subscribe</p>
+                  <p className="cta-cell__sub">Free. One Google click.</p>
+                </div>
+              </Link>
+              <a href="#features" className="cta-cell">
+                <svg className="cta-cell__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path d="M4 4h16v16H4zM9 9h6M9 13h6M9 17h3" />
+                </svg>
+                <div>
+                  <p className="cta-cell__label">Features</p>
+                  <p className="cta-cell__sub">Eight reasons to switch.</p>
+                </div>
+              </a>
+              <a href="#demo" className="cta-cell">
+                <svg className="cta-cell__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" /><path d="M12 3v9l7 4" />
+                </svg>
+                <div>
+                  <p className="cta-cell__label">See It Read</p>
+                  <p className="cta-cell__sub">Watch the machine work.</p>
+                </div>
+              </a>
+              <a href="#voices" className="cta-cell">
+                <svg className="cta-cell__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path d="M12 3l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" />
+                </svg>
+                <div>
+                  <p className="cta-cell__label">Readers</p>
+                  <p className="cta-cell__sub">What people say.</p>
+                </div>
+              </a>
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="foot">
+          <div>
+            <p className="foot__brand">MR<span>.</span>NEWS</p>
+            <p className="foot__tag">Written by machines, checked by people</p>
+          </div>
+          <div className="foot__cols">
+            <div className="foot__col">
+              <h4>The Paper</h4>
+              <a href="#how">How It Works</a>
+              <a href="#demo">See It Read</a>
+              <a href="#features">Features</a>
+            </div>
+            <div className="foot__col">
+              <h4>Account</h4>
+              <Link href="/login">Subscribe Free</Link>
+              <a href="#" id="footReport">Report a Problem</a>
+            </div>
+            <div className="foot__col">
+              <h4>Elsewhere</h4>
+              <a href="#">RSS</a>
+              <a href="#">Mastodon</a>
+              <a href="#">Contact</a>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* FLOATING SIDE LABEL */}
-      <div className="float-label" aria-hidden="true"><span>EST. 2024 ✦ MR NEWS ✦ WORLDWIDE EDITION</span></div>
+        <p className="foot__bottom">
+          <span>&copy; {new Date().getFullYear()} MR NEWS. All rights reserved.</span>
+          <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
+        </p>
+      </footer>
 
       <ReportPanelModal />
-      <ScrollReveal />
-      <MagneticButtons />
     </>
   );
 }
