@@ -6,6 +6,9 @@ import { AnimatedCounters } from './components/AnimatedCounters';
 import { ReadingMachineDemo } from './components/ReadingMachineDemo';
 import { ClockSelector } from './components/ClockSelector';
 import { ReportPanelModal } from './components/ReportPanelModal';
+import { ScrollReveal } from './components/ScrollReveal';
+import { MagneticButtons } from './components/MagneticButtons';
+import { Dateline } from './components/Dateline';
 
 export default function HomePage() {
   return (
@@ -45,6 +48,8 @@ export default function HomePage() {
                   </Link>
                 </span>
               </div>
+              {/* DATELINE */}
+              <Dateline />
 
               {/* BRAND */}
               <div className="brand">
@@ -114,9 +119,12 @@ export default function HomePage() {
             </header>
 
             <main id="main">
+              {/* VERTICAL SECTION LABEL */}
+              <div className="vert-label" aria-hidden="true"><span>MR NEWS ✦ DAILY BRIEFING ✦ EST. 2024</span></div>
 
               {/* HERO */}
-              <section className="hero">
+              {/* SEC NUM */}
+              <section className="hero" data-sec="01">
                 <div className="reveal is-in">
                   <p className="hero__eyebrow">The Daily Briefing</p>
                 </div>
@@ -135,7 +143,7 @@ export default function HomePage() {
               <AnimatedCounters />
 
               {/* DEMO */}
-              <section className="section" id="demo">
+              <section className="section" id="demo" data-sec="02">
                 <header className="sec-head reveal is-in">
                   <p className="sec-head__kicker">Fig. 1 / How the Machine Reads</p>
                   <h2 className="sec-head__title">Watch a <em>headline</em> get read</h2>
@@ -145,7 +153,7 @@ export default function HomePage() {
               </section>
 
               {/* HOW IT WORKS */}
-              <section className="section" id="how">
+              <section className="section" id="how" data-sec="03">
                 <div className="rule-orn" aria-hidden="true"><span /></div>
                 <header className="sec-head reveal is-in">
                   <p className="sec-head__kicker">What MR News Actually Does</p>
@@ -181,7 +189,7 @@ export default function HomePage() {
               </section>
 
               {/* FEATURES */}
-              <section className="section" id="features">
+              <section className="section" id="features" data-sec="04">
                 <header className="sec-head reveal is-in">
                   <p className="sec-head__kicker">Features</p>
                   <h2 className="sec-head__title">Everything a <em>serious briefing</em> should be</h2>
@@ -199,7 +207,7 @@ export default function HomePage() {
               </section>
 
               {/* DELIVERY */}
-              <section className="section" id="delivery">
+              <section className="section" id="delivery" data-sec="05">
                 <header className="sec-head reveal is-in">
                   <p className="sec-head__kicker">Delivery</p>
                   <h2 className="sec-head__title">The briefing arrives <em>when you say so</em></h2>
@@ -221,7 +229,7 @@ export default function HomePage() {
               </section>
 
               {/* READERS */}
-              <section className="section" id="voices">
+              <section className="section" id="voices" data-sec="06">
                 <div className="rule-orn" aria-hidden="true"><span /></div>
                 <header className="sec-head reveal is-in">
                   <p className="sec-head__kicker">Readers&apos; Letters</p>
@@ -350,7 +358,12 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* FLOATING SIDE LABEL */}
+      <div className="float-label" aria-hidden="true"><span>EST. 2024 ✦ MR NEWS ✦ WORLDWIDE EDITION</span></div>
+
       <ReportPanelModal />
+      <ScrollReveal />
+      <MagneticButtons />
     </>
   );
 }

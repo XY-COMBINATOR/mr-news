@@ -467,6 +467,118 @@ ul,ol{padding:0;list-style:none;}
 }
 .reveal.is-in{opacity:1;transform:none;}
 
+/* ═══════════ AWWWARDS ENHANCEMENTS ═══════════ */
+
+/* 1. DATELINE BAR */
+.dateline{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  font-family:var(--f-mono);font-size:.6rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--ink-3);
+  padding:7px 0 10px;border-top:1px solid var(--ink-3);
+  border-bottom:2px solid var(--ink);
+  margin-bottom:0;
+  background:var(--paper-2);
+}
+.dateline__sep{color:var(--gold);font-size:.7rem;}
+@media(max-width:640px){
+  .dateline{font-size:.5rem;letter-spacing:.16em;gap:8px;}
+  .dateline span:nth-child(5),.dateline span:nth-child(6){display:none;}
+}
+
+/* 4. VERTICAL SECTION LABEL */
+.vert-label{
+  position:fixed;left:0;top:50%;z-index:50;
+  transform:translateY(-50%);
+  pointer-events:none;
+  display:flex;align-items:center;
+}
+.vert-label span{
+  display:block;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--ink-4);
+  background:var(--paper);
+  padding:14px 6px;
+  border-right:1px solid var(--ink-4);
+  border-top:1px solid var(--ink-4);
+  border-bottom:1px solid var(--ink-4);
+  opacity:.5;
+}
+@media(max-width:1200px){.vert-label{display:none;}}
+
+/* 9. FLOATING EST. LABEL */
+.float-label{
+  position:fixed;right:0;top:50%;z-index:50;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+.float-label span{
+  display:block;
+  writing-mode:vertical-rl;
+  font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--ink-4);
+  background:var(--paper);
+  padding:14px 6px;
+  border-left:1px solid var(--ink-4);
+  border-top:1px solid var(--ink-4);
+  border-bottom:1px solid var(--ink-4);
+  opacity:.5;
+}
+@media(max-width:1200px){.float-label{display:none;}}
+
+/* 3. OVERSIZED SECTION NUMBERS */
+[data-sec]{
+  position:relative;
+}
+[data-sec]::before{
+  content:attr(data-sec);
+  position:absolute;top:-0.1em;right:.1em;
+  font-family:var(--f-display);font-weight:900;
+  font-size:clamp(6rem,18vw,18rem);
+  line-height:1;
+  color:var(--ink);
+  opacity:.04;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+  letter-spacing:-.05em;
+}
+
+/* MAGNETIC BUTTON SMOOTHING */
+.register-btn,.site-nav__cta,.quiet-cta__link{
+  transition:transform .3s cubic-bezier(.22,.85,.28,1),
+             box-shadow .2s var(--ease),
+             background .3s var(--ease),
+             border-color .3s var(--ease),
+             opacity .18s;
+}
+
+/* 6. MULTI-COLUMN BODY TEXT */
+.pillar__body{
+  column-count:1;
+}
+.hero__deck{
+  font-family:var(--f-fell);font-style:italic;
+  font-size:clamp(1.15rem,2.1vw,1.5rem);
+  line-height:1.6;color:var(--ink-2);
+  max-width:100%;margin:0;
+}
+
+/* 7. THICK BORDER PULL-QUOTE ACCENTS */
+.quote__body{
+  border-left:4px solid var(--stamp);
+  padding-left:18px;
+  margin-left:0;
+}
+.pillar__body b{
+  border-bottom:1.5px solid var(--code);
+  padding-bottom:1px;
+}
+
+/* 1-BIG TYPOGRAPHY — HERO */
 /* ═══════════ HERO ═══════════ */
 .hero{padding:44px 0 42px;text-align:center;position:relative;}
 
@@ -481,9 +593,9 @@ ul,ol{padding:0;list-style:none;}
 
 .hero__title{
   font-family:var(--f-display);font-weight:900;
-  font-size:clamp(2.6rem,6.6vw,5rem);
-  line-height:1;letter-spacing:-.03em;
-  text-transform:uppercase;margin-bottom:26px;
+  font-size:clamp(3.4rem,9vw,7.5rem);
+  line-height:.96;letter-spacing:-.04em;
+  text-transform:uppercase;margin-bottom:32px;
   color:var(--ink);
 }
 .hero__title em{
