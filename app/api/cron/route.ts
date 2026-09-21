@@ -8,8 +8,10 @@ export async function GET(req: Request) {
   const authHeader = req.headers.get('authorization');
   const isVercelCron = req.headers.get('user-agent')?.includes('vercel-cron');
 
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}` && !isVercelCron) {
-    return NextResponse.json({ error: 'Unauthorized cron request' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production' || CRON_SECRET) {
+    if (!CRON_SECRET || (authHeader !== `Bearer ${CRON_SECRET}` && !isVercelCron)) {
+      return NextResponse.json({ error: 'Unauthorized cron request' }, { status: 401 });
+    }
   }
 
   try {

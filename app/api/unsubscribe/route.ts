@@ -28,6 +28,8 @@ export async function GET(req: Request) {
       return new NextResponse('Failed to update subscription status.', { status: 500 });
     }
 
+    const safeEmail = email.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] || m));
+
     // Return clean vintage confirmation HTML page
     const htmlResponse = `<!DOCTYPE html>
 <html lang="en">
@@ -46,7 +48,7 @@ export async function GET(req: Request) {
   <div class="card">
     <h1>MR NEWS</h1>
     <p>You have been successfully unsubscribed from daily briefings.</p>
-    <p>Email: <strong>${email}</strong></p>
+    <p>Email: <strong>${safeEmail}</strong></p>
     <p style="margin-top: 24px;"><a href="/">Return to Front Page</a></p>
   </div>
 </body>

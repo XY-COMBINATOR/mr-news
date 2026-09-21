@@ -6,8 +6,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { email, name, deliveryHour, topics } = body;
 
-    if (!email || typeof email !== 'string') {
-      return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
+    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 400 });
     }
 
     const hour = parseInt(deliveryHour, 10);
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       .upsert(
         {
           email: email.trim().toLowerCase(),
-          name: name || '',
+          name: typeof name === 'string' ? name.trim() : '',
           delivery_hour: validHour,
           topics: validTopics,
           status: 'active',
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('[SUBSCRIBE_API] Supabase error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to process subscription. Please try again later.' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, subscriber: data });
