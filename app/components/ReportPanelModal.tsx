@@ -32,7 +32,7 @@ export function ReportPanelModal() {
 
   const handleSend = () => {
     setFineText(`Thank you. Report filed under ${reportKind}.`);
-    setFineColor('var(--stamp)');
+    setFineColor('var(--sea)');
     setMessage('');
 
     setTimeout(() => {

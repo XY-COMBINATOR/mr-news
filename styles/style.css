@@ -829,3 +829,154 @@ h1,h2,h3 { text-wrap: balance; }
    ================================================================ */
 .mobile-nav { display: none; }
 .paper-grain, .paper-wrap, .paper-sheet, .paper-sheet__inner, .entry, .vert-label, .float-label { display: none !important; }
+
+/* ================================================================
+   FLOATER BUTTONS (back-to-top + report trigger)
+   ================================================================ */
+.floaters {
+  position: fixed;
+  right: 20px; bottom: 20px;
+  z-index: 400;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+
+.float-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  color: var(--text-3);
+  cursor: pointer;
+  transition: border-color var(--dur-ui), color var(--dur-ui), background var(--dur-ui), transform var(--dur-ui);
+}
+.float-btn svg { width: 16px; height: 16px; }
+.float-btn:hover {
+  border-color: var(--acc); color: var(--acc);
+  background: color-mix(in srgb, var(--acc) 8%, var(--bg-surface));
+}
+.float-btn--report { border-color: color-mix(in srgb, var(--acc) 40%, var(--border)); }
+.float-btn--report:hover { transform: scale(1.06); }
+
+/* hide back-to-top until scrolled */
+.float-btn--top {
+  opacity: 0; pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .2s, transform .2s, border-color var(--dur-ui), color var(--dur-ui);
+}
+.float-btn--top.show {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+
+/* ================================================================
+   REPORT PANEL — slide-up modal
+   ================================================================ */
+.report-panel {
+  position: fixed;
+  right: 20px; bottom: 72px;
+  z-index: 500;
+  width: min(360px, calc(100vw - 32px));
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 48px -12px rgba(0,0,0,.55);
+  display: flex; flex-direction: column; gap: 0;
+
+  /* slide up from below */
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity .22s var(--ease-out), transform .22s var(--ease-out);
+}
+.report-panel.open {
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+
+/* header */
+.report-panel__head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.report-panel__title {
+  font-family: var(--f-display);
+  font-size: .95rem; font-weight: 600;
+  letter-spacing: -.01em; color: var(--text-1);
+  margin-bottom: 3px;
+}
+.report-panel__sub {
+  font-family: var(--f-mono); font-size: .68rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-3);
+}
+.report-panel__close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: none; border: 1px solid transparent; cursor: pointer;
+  color: var(--text-3);
+  transition: border-color var(--dur-ui), color var(--dur-ui);
+}
+.report-panel__close svg { width: 14px; height: 14px; }
+.report-panel__close:hover { border-color: var(--border); color: var(--text-1); }
+
+/* type chips */
+.report-options {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.report-opt {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px;
+  font-family: var(--f-mono); font-size: .72rem;
+  border: 1px solid var(--border);
+  background: none; color: var(--text-3);
+  cursor: pointer;
+  transition: border-color var(--dur-ui), color var(--dur-ui), background var(--dur-ui);
+  white-space: nowrap;
+}
+.report-opt b {
+  font-weight: 700; color: var(--text-2);
+}
+.report-opt:hover {
+  border-color: color-mix(in srgb, var(--acc) 50%, var(--border));
+  color: var(--text-1);
+}
+.report-opt.active {
+  border-color: var(--acc);
+  background: color-mix(in srgb, var(--acc) 10%, transparent);
+  color: var(--text-1);
+}
+.report-opt.active b { color: var(--acc); }
+
+/* textarea */
+.report-panel textarea {
+  width: 100%; resize: none;
+  padding: 14px 20px;
+  font-family: var(--f-body); font-size: .88rem; line-height: 1.6;
+  background: var(--bg-elev);
+  border: none; border-bottom: 1px solid var(--border);
+  color: var(--text-1); outline: none;
+  transition: background var(--dur-ui);
+}
+.report-panel textarea::placeholder { color: var(--text-3); }
+.report-panel textarea:focus { background: color-mix(in srgb, var(--bg-elev) 70%, var(--bg-surface)); }
+
+/* send button */
+.report-panel__send {
+  display: flex; align-items: center; justify-content: center;
+  width: calc(100% - 40px); margin: 16px 20px 0;
+  min-height: 40px;
+  font-family: var(--f-mono); font-size: .78rem; font-weight: 700;
+  background: var(--acc); color: var(--text-on);
+  border: 1px solid var(--acc); cursor: pointer;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+.report-panel__send:hover { background: var(--acc-h); border-color: var(--acc-h); }
+
+/* fine print */
+.report-panel__fine {
+  font-family: var(--f-mono); font-size: .68rem;
+  letter-spacing: .04em; text-align: center;
+  color: var(--text-3); padding: 10px 20px 18px;
+  transition: color .3s;
+}
