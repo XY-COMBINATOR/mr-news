@@ -358,36 +358,120 @@ export default function HomePage() {
       </main>
 
       {/* FOOTER */}
-      <footer>
-        <div className="foot">
-          <div>
-            <p className="foot__brand">MR<span>.</span>NEWS</p>
-            <p className="foot__tag">Written by machines, checked by people</p>
-          </div>
-          <div className="foot__cols">
-            <div className="foot__col">
-              <h4>The Paper</h4>
-              <a href="#how">How It Works</a>
-              <a href="#demo">See It Read</a>
-              <a href="#features">Features</a>
+      <footer className="foot">
+
+        {/* ── TOP: Newsletter CTA strip ── */}
+        <div className="foot-cta">
+          <div className="foot-cta__inner">
+            <div className="foot-cta__copy">
+              <p className="foot-cta__label">Stay informed</p>
+              <h2 className="foot-cta__title">Seven stories. Five minutes. Every morning.</h2>
+              <p className="foot-cta__desc">Free, forever. No ads, no trackers, no paywalls.</p>
             </div>
-            <div className="foot__col">
-              <h4>Account</h4>
-              <Link href="/login">Subscribe Free</Link>
-              <a href="#" id="footReport">Report a Problem</a>
-            </div>
-            <div className="foot__col">
-              <h4>Elsewhere</h4>
-              <a href="#">RSS</a>
-              <a href="#">Mastodon</a>
-              <a href="#">Contact</a>
-            </div>
+            <Link href="/login" className="btn btn-primary foot-cta__btn" id="footSubscribe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+              Subscribe free
+            </Link>
           </div>
         </div>
-        <p className="foot__bottom">
-          <span>&copy; {new Date().getFullYear()} MR NEWS. All rights reserved.</span>
-          <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
-        </p>
+
+        {/* ── MID: 4-col nav grid ── */}
+        <div className="foot-grid">
+          {/* Brand cell */}
+          <div className="foot-grid__brand">
+            <p className="foot-brand">
+              <span className="foot-brand__mr">MR</span>
+              <span className="foot-brand__dot">.</span>
+              <span className="foot-brand__news">NEWS</span>
+            </p>
+            <p className="foot-brand__tag">Written by machines,<br />checked by people</p>
+            <div className="foot-socials">
+              <a href="#" className="foot-social" aria-label="RSS feed">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                  <path d="M4 11a9 9 0 0 1 9 9" />
+                  <path d="M4 4a16 16 0 0 1 16 16" />
+                  <circle cx="5" cy="19" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+              <a href="#" className="foot-social" aria-label="Mastodon">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                  <path d="M21.327 8.566c0-4.339-2.843-5.61-2.843-5.61-1.433-.658-3.894-.935-6.451-.956h-.063c-2.557.021-5.016.298-6.45.956 0 0-2.843 1.272-2.843 5.61 0 .993-.019 2.181.012 3.441.103 4.243.778 8.425 4.701 9.463 1.809.479 3.362.579 4.612.51 2.268-.126 3.542-.809 3.542-.809l-.075-1.646s-1.621.511-3.441.449c-1.804-.062-3.707-.194-3.999-2.409a4.523 4.523 0 0 1-.04-.621s1.77.433 4.014.536c1.372.063 2.658-.08 3.965-.236 2.506-.299 4.688-1.843 4.962-3.254.434-2.223.398-5.424.398-5.424zm-3.353 5.59h-2.081V9.057c0-1.075-.452-1.62-1.357-1.62-1 0-1.501.647-1.501 1.927v2.791h-2.069V9.364c0-1.28-.501-1.927-1.502-1.927-.905 0-1.357.546-1.357 1.62v5.099H6.026V8.903c0-1.074.273-1.927.823-2.558.566-.631 1.307-.955 2.228-.955 1.065 0 1.872.409 2.405 1.228l.518.869.519-.869c.533-.819 1.34-1.228 2.405-1.228.92 0 1.662.324 2.228.955.549.631.822 1.484.822 2.558v5.253z" />
+                </svg>
+              </a>
+              <a href="#" className="foot-social" aria-label="Contact us">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Nav cols */}
+          <div className="foot-col">
+            <h3 className="foot-col__head">The Paper</h3>
+            <nav aria-label="Footer: The Paper">
+              <a href="#how" className="foot-col__link">How It Works</a>
+              <a href="#demo" className="foot-col__link">See It Read</a>
+              <a href="#features" className="foot-col__link">Features</a>
+              <a href="#delivery" className="foot-col__link">Delivery</a>
+              <a href="#voices" className="foot-col__link">Reader Stories</a>
+            </nav>
+          </div>
+
+          <div className="foot-col">
+            <h3 className="foot-col__head">Account</h3>
+            <nav aria-label="Footer: Account">
+              <Link href="/login" className="foot-col__link">Subscribe Free</Link>
+              <a href="#subscribe" className="foot-col__link">Manage Preferences</a>
+              <a href="#" className="foot-col__link">Archive</a>
+              <a href="#" className="foot-col__link">Referrals</a>
+            </nav>
+          </div>
+
+          <div className="foot-col">
+            <h3 className="foot-col__head">Company</h3>
+            <nav aria-label="Footer: Company">
+              <a href="#" className="foot-col__link">About</a>
+              <a href="#" className="foot-col__link">Editorial Standards</a>
+              <a href="#" className="foot-col__link">Contact</a>
+              <a href="#" className="foot-col__link">Corrections Policy</a>
+            </nav>
+          </div>
+        </div>
+
+        {/* ── STATS ROW ── */}
+        <div className="foot-stats">
+          <div className="foot-stat">
+            <span className="foot-stat__n">600+</span>
+            <span className="foot-stat__l">Sources nightly</span>
+          </div>
+          <div className="foot-stat">
+            <span className="foot-stat__n">61K</span>
+            <span className="foot-stat__l">Subscribers</span>
+          </div>
+          <div className="foot-stat">
+            <span className="foot-stat__n">5 min</span>
+            <span className="foot-stat__l">Read time</span>
+          </div>
+          <div className="foot-stat">
+            <span className="foot-stat__n">100%</span>
+            <span className="foot-stat__l">Free, forever</span>
+          </div>
+        </div>
+
+        {/* ── BOTTOM BAR ── */}
+        <div className="foot-bar">
+          <span className="foot-bar__copy">&copy; {new Date().getFullYear()} MR NEWS. All rights reserved.</span>
+          <div className="foot-bar__links">
+            <a href="#">Privacy Policy</a>
+            <span aria-hidden="true">&middot;</span>
+            <a href="#">Terms of Service</a>
+            <span aria-hidden="true">&middot;</span>
+            <a href="#">Corrections</a>
+          </div>
+        </div>
+
       </footer>
 
       <ReportPanelModal />
