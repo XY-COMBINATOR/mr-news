@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MR NEWS — The AI Newsletter That Reads Itself</title>
+<meta name="description" content="Six hundred sources. Seven stories. Five minutes. The AI newsletter curated for humans.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ENTRY -->
+<div class="entry" id="entry" aria-hidden="true">
+  <div class="entry__drop"></div>
+  <div class="entry__splash"></div>
+  <div class="entry__paper"></div>
+  <div class="entry__text">MR News<small>The AI Newsletter</small></div>
+  <div class="entry__fade"></div>
+</div>
+
+<div class="ink-dot ink-dot--core" id="inkCore" aria-hidden="true"></div>
+
+<!-- FLOATERS -->
+<div class="floaters">
+  <button class="float-btn float-btn--top" id="topBtn" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button class="float-btn float-btn--report" id="reportBtn" aria-label="Report a problem" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="10"/>
+    </svg>
+  </button>
+</div>
+
+<div class="report-panel" id="reportPanel" role="dialog" aria-labelledby="reportTitle">
+  <div class="report-panel__head">
+    <div>
+      <div class="report-panel__title" id="reportTitle">Report &amp; Feedback</div>
+      <div class="report-panel__sub">Help us improve the paper.</div>
+    </div>
+    <button class="report-panel__close" id="reportClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="report-options" role="radiogroup" aria-label="Report type">
+    <button class="report-opt active" data-report="error" role="radio" aria-checked="true"><b>Error</b> Something is wrong</button>
+    <button class="report-opt" data-report="idea" role="radio" aria-checked="false"><b>Idea</b> Feature request</button>
+    <button class="report-opt" data-report="content" role="radio" aria-checked="false"><b>Content</b> Bad summary</button>
+    <button class="report-opt" data-report="other" role="radio" aria-checked="false"><b>Other</b> Just saying hi</button>
+  </div>
+  <label for="reportMsg" class="sr">Your message</label>
+  <textarea id="reportMsg" placeholder="Tell us what happened" rows="3"></textarea>
+  <button class="report-panel__send" id="reportSend" type="button">Send Report</button>
+  <p class="report-panel__fine" id="reportFine">We reply to every message within a day.</p>
+</div>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="paper-wrap">
+  <div class="paper-sheet">
+    <div class="paper-grain" aria-hidden="true"></div>
+    <div class="paper-sheet__inner">
+
+      <!-- ═══ MASTHEAD ═══ -->
+      <header class="masthead">
+
+        <div class="masthead__top">
+          <span class="left">Est. 2024</span>
+          <span class="mid">The newsletter that reads the news for you</span>
+          <span class="right">
+            <a href="login.html" class="register-btn" aria-label="Register for MR News">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+              Register
+            </a>
+          </span>
+        </div>
+
+        <!-- BRAND: LOGO ON TOP, MR NEWS BELOW -->
+        <div class="brand">
+          <img
+            src="assets/brand/mr_news_logo.svg"
+            alt="MR News logo"
+            class="brand__logo"
+            loading="eager"
+            onerror="this.style.display='none'"
+          >
+          <h1 class="brand__text" aria-label="MR NEWS">
+            <span aria-hidden="true">MR</span>
+            <span class="brand__globe" aria-hidden="true">
+              <svg viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="46" stroke="#1a1510" stroke-width="3.2"/>
+                <g class="meridians">
+                  <ellipse cx="50" cy="50" rx="20" ry="46" stroke="#1a1510" stroke-width="2"/>
+                  <ellipse cx="50" cy="50" rx="38" ry="46" stroke="#1a1510" stroke-width="1.4" opacity=".5"/>
+                  <line x1="4" y1="50" x2="96" y2="50" stroke="#1a1510" stroke-width="2"/>
+                  <path d="M12 28 Q50 40 88 28" stroke="#1a1510" stroke-width="1.6" opacity=".7"/>
+                  <path d="M12 72 Q50 60 88 72" stroke="#1a1510" stroke-width="1.6" opacity=".7"/>
+                  <path d="M28 20 Q40 44 34 80" stroke="#1a1510" stroke-width="1.2" opacity=".4"/>
+                  <path d="M66 18 Q56 44 64 82" stroke="#1a1510" stroke-width="1.2" opacity=".4"/>
+                </g>
+              </svg>
+            </span>
+            <span aria-hidden="true">NEWS</span>
+          </h1>
+          <p class="brand__tagline">Six Hundred Sources, One Page</p>
+
+          <div class="brand__sides">
+            <div class="brand__side left">
+              Truth<br>Summarised<br>Daily.
+              <em>Less noise.<br>More insight.</em>
+            </div>
+            <div></div>
+            <div class="brand__side right">
+              Powered<br>by AI.<br>Curated for Humans.
+              <em>Same world.<br>A clearer view.</em>
+            </div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Primary">
+          <button class="nav__burger" id="burger" aria-expanded="false" aria-controls="navlist">
+            <span></span><span></span><span></span><span class="sr">Menu</span>
+          </button>
+          <ul class="nav__list" id="navlist">
+            <li class="nav__item"><a href="#how">How It Works</a></li>
+            <li class="nav__item"><a href="#demo">See It Read</a></li>
+            <li class="nav__item"><a href="#features">Features</a></li>
+            <li class="nav__item"><a href="#delivery">Delivery</a></li>
+            <li class="nav__item"><a href="#voices">Readers</a></li>
+          </ul>
+        </nav>
+
+        <div class="wire" aria-hidden="true">
+          <div class="wire__track">
+            <div class="wire__set">
+              <b>Live</b> 600 sources scanned continuously
+              <i>&#9670;</i> Duplicates removed by semantic similarity
+              <i>&#9670;</i> Ranked by real world impact
+              <i>&#9670;</i> Written by language models, checked by people
+              <i>&#9670;</i> Delivered at your chosen hour
+              <i>&#9670;</i> 61,000 readers and counting
+              <i>&#9670;</i>
+            </div>
+            <div class="wire__set">
+              <b>Live</b> 600 sources scanned continuously
+              <i>&#9670;</i> Duplicates removed by semantic similarity
+              <i>&#9670;</i> Ranked by real world impact
+              <i>&#9670;</i> Written by language models, checked by people
+              <i>&#9670;</i> Delivered at your chosen hour
+              <i>&#9670;</i> 61,000 readers and counting
+              <i>&#9670;</i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="reveal">
+      <p class="hero__eyebrow">The Daily Briefing</p>
+    </div>
+    <h2 class="hero__title reveal" style="--d:.06s">The AI newsletter<br>that <em>reads itself</em></h2>
+    <div class="hero__rule reveal" style="--d:.1s"></div>
+    <p class="hero__deck reveal" style="--d:.14s">
+      We point an army of <b>language models</b> at six hundred news sources every night.
+      They read everything, throw away duplicates, rank what matters, and write a
+      briefing you can finish in five minutes.
+    </p>
+  </section>
+
+  <section class="stats">
+    <div class="stat reveal"><p class="stat__num" data-count="61000">0</p><p class="stat__lbl">Readers</p></div>
+    <div class="stat reveal" style="--d:.06s"><p class="stat__num" data-count="600">0<sup>+</sup></p><p class="stat__lbl">Sources read nightly</p></div>
+    <div class="stat reveal" style="--d:.12s"><p class="stat__num" data-count="7">0</p><p class="stat__lbl">Stories per issue</p></div>
+    <div class="stat reveal" style="--d:.18s"><p class="stat__num" data-count="5">0<sup>m</sup></p><p class="stat__lbl">Average read time</p></div>
+  </section>
+
+  <section class="section" id="demo">
+    <header class="sec-head reveal">
+      <p class="sec-head__kicker">Fig. 1 / How the Machine Reads</p>
+      <h2 class="sec-head__title">Watch a <em>headline</em> get read</h2>
+      <p class="sec-head__sub">See what our models see, in real time.</p>
+    </header>
+    <div class="demo reveal" id="demoBox">
+      <div class="demo__head"><b>The Reading Machine</b><span>live demo</span></div>
+      <p class="demo__prompt">Incoming headline from the wire</p>
+      <div class="demo__input" id="demoInput"><span class="cursor" aria-hidden="true"></span></div>
+      <div class="demo__panels">
+        <div class="demo__panel" data-panel="1">
+          <h5>Entities</h5>
+          <p><span class="chip">Company</span><span class="chip">Country</span><span class="chip">Model</span></p>
+        </div>
+        <div class="demo__panel" data-panel="2">
+          <h5>Impact score</h5>
+          <div class="meter"><span>0</span><div class="meter-bar"><div class="meter-fill" data-fill="78"></div></div><span>100</span></div>
+          <p style="margin-top:10px;font-size:.82rem">Ranked 1 of 47 candidates</p>
+        </div>
+        <div class="demo__panel" data-panel="3">
+          <h5>Bias check</h5>
+          <p>Neutral tone detected. No loaded verbs. Sources verified across <b style="font-family:var(--f-code);color:var(--code)">3</b> wire services.</p>
+        </div>
+        <div class="demo__panel" data-panel="4">
+          <h5>Summary</h5>
+          <p>A small lab released an open model that matches frontier benchmarks at a fraction of the cost.</p>
+        </div>
+      </div>
+      <p class="demo__foot"><b>Fig. 1</b> What happens to every story before it reaches your inbox.</p>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="rule-orn" aria-hidden="true"><span></span></div>
+    <header class="sec-head reveal">
+      <p class="sec-head__kicker">What MR News Actually Does</p>
+      <h2 class="sec-head__title">We built a <em>reading machine</em> for the AI era</h2>
+      <p class="sec-head__sub">Because no human should have to read 600 articles a day. That is a robot's job.</p>
+    </header>
+    <div class="pillars">
+      <article class="pillar reveal">
+        <span class="pillar__num">I</span>
+        <svg class="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h18v14H3z"/><path d="M7 8h10M7 12h7"/><path d="M8 18l-2 3M16 18l2 3"/></svg>
+        <h3 class="pillar__title">Reads Everything</h3>
+        <p class="pillar__body">Wire services, research preprints, regulator filings, press releases, social posts. <b>600+ per night.</b> The models do not get tired. They do not skim.</p>
+      </article>
+      <article class="pillar reveal" style="--d:.08s">
+        <span class="pillar__num">II</span>
+        <svg class="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4"/></svg>
+        <h3 class="pillar__title">Decides What Matters</h3>
+        <p class="pillar__body">Every candidate story is scored on <b>impact, novelty, and credibility</b>. Only seven make the cut.</p>
+      </article>
+      <article class="pillar reveal" style="--d:.16s">
+        <span class="pillar__num">III</span>
+        <svg class="pillar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 17h5"/></svg>
+        <h3 class="pillar__title">Writes It Plainly</h3>
+        <p class="pillar__body">No jargon. No hedging. Then <b>a human editor reads the whole issue</b> before it goes out.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <header class="sec-head reveal">
+      <p class="sec-head__kicker">Features</p>
+      <h2 class="sec-head__title">Everything a <em>serious briefing</em> should be</h2>
+    </header>
+    <div class="features">
+      <div class="feat reveal"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h4 class="feat__title">Pick Your Hour</h4><p class="feat__body">6 a.m. for commuters. Noon for night owls. Any hour you like.</p></div>
+      <div class="feat reveal" style="--d:.04s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><h4 class="feat__title">Pick Your Topics</h4><p class="feat__body">Policy, chips, labs, funding, safety, science. You choose.</p></div>
+      <div class="feat reveal" style="--d:.08s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h6l3-6 3 12 3-6h3"/></svg><h4 class="feat__title">Three Lengths</h4><p class="feat__body">Skim in 1 minute, Standard in 5, or Deep in 12.</p></div>
+      <div class="feat reveal" style="--d:.12s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><h4 class="feat__title">Corrections First</h4><p class="feat__body">When we get it wrong, the fix runs at the top. Every time.</p></div>
+      <div class="feat reveal" style="--d:.16s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18"/></svg><h4 class="feat__title">Global Sources</h4><p class="feat__body">English, Mandarin, German, French, Japanese, all read natively.</p></div>
+      <div class="feat reveal" style="--d:.2s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M8 6V4M16 6V4"/></svg><h4 class="feat__title">Archive Access</h4><p class="feat__body">Every issue ever sent, searchable.</p></div>
+      <div class="feat reveal" style="--d:.24s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><h4 class="feat__title">Zero Trackers</h4><p class="feat__body">No pixels, no beacons, no ads.</p></div>
+      <div class="feat reveal" style="--d:.28s"><svg class="feat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><h4 class="feat__title">Free Forever</h4><p class="feat__body">Funded by a small group of patient readers.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="delivery">
+    <header class="sec-head reveal">
+      <p class="sec-head__kicker">Delivery</p>
+      <h2 class="sec-head__title">The briefing arrives <em>when you say so</em></h2>
+    </header>
+    <div class="delivery">
+      <div class="delivery__copy reveal">
+        <p class="kicker">Your Morning, Your Rules</p>
+        <h3>You pick the <em>hour</em>, the <em>length</em>, the <em>topics</em></h3>
+        <p>Registering takes one click. After that, you are in the driver's seat.</p>
+        <ul class="delivery__list">
+          <li><span class="check">&#10003;</span><span>Choose a delivery time that matches your morning</span></li>
+          <li><span class="check">&#10003;</span><span>Toggle sections on or off: policy, chips, science, funding</span></li>
+          <li><span class="check">&#10003;</span><span>Switch reading length any day, instantly</span></li>
+          <li><span class="check">&#10003;</span><span>Pause for a week without losing your place</span></li>
+        </ul>
+      </div>
+      <div class="clock reveal" style="--d:.1s">
+        <p class="clock__label">Your briefing arrives at</p>
+        <div class="clock__face">
+          <svg viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="86" fill="none" stroke="#1a1510" stroke-width="2"/>
+            <circle cx="90" cy="90" r="76" fill="#e8ddc2" stroke="#1a1510" stroke-width="1"/>
+            <g stroke="#1a1510" stroke-width="1.5">
+              <line x1="90" y1="14" x2="90" y2="22"/><line x1="90" y1="158" x2="90" y2="166"/>
+              <line x1="14" y1="90" x2="22" y2="90"/><line x1="158" y1="90" x2="166" y2="90"/>
+            </g>
+            <text x="90" y="34" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" fill="#1a1510">12</text>
+            <text x="152" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" fill="#1a1510">3</text>
+            <text x="90" y="158" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" fill="#1a1510">6</text>
+            <text x="28" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" fill="#1a1510">9</text>
+            <line class="clock__hand" id="clockHour" x1="90" y1="90" x2="90" y2="50" stroke="#1a1510" stroke-width="3" stroke-linecap="round"/>
+            <line class="clock__hand" id="clockMin" x1="90" y1="90" x2="90" y2="30" stroke="#7a2418" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="90" cy="90" r="4" fill="#1a1510"/>
+          </svg>
+        </div>
+        <p class="clock__time" id="clockTime">06:00</p>
+        <p class="clock__tz">Local time, adjustable anytime</p>
+        <div class="clock__slots" id="clockSlots">
+          <button class="slot" data-hour="5">05:00</button>
+          <button class="slot active" data-hour="6">06:00</button>
+          <button class="slot" data-hour="7">07:00</button>
+          <button class="slot" data-hour="8">08:00</button>
+          <button class="slot" data-hour="12">12:00</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="voices">
+    <div class="rule-orn" aria-hidden="true"><span></span></div>
+    <header class="sec-head reveal">
+      <p class="sec-head__kicker">Readers' Letters</p>
+      <h2 class="sec-head__title">Dispatches from our <em>subscribers</em></h2>
+    </header>
+    <div class="quotes">
+      <article class="quote reveal">
+        <div class="quote__head"><span>From the Desk Of</span><span>Sept 14</span></div>
+        <p class="quote__body">I used to spend forty minutes every morning opening twelve tabs. Now I read MR News in five and I actually understand what I read.</p>
+        <p class="quote__sign">Priya N.<b>Product Lead, Bangalore</b></p>
+      </article>
+      <article class="quote reveal" style="--d:.08s">
+        <div class="quote__head"><span>From the Desk Of</span><span>Sept 12</span></div>
+        <p class="quote__body">The corrections column alone is worth registering. No other AI newsletter admits when it gets something wrong.</p>
+        <p class="quote__sign">Marcus H.<b>Policy Researcher, Brussels</b></p>
+      </article>
+      <article class="quote reveal" style="--d:.16s">
+        <div class="quote__head"><span>From the Desk Of</span><span>Sept 10</span></div>
+        <p class="quote__body">I forwarded Wednesday's issue to my entire leadership team. For the first time we all walked in knowing the same facts.</p>
+        <p class="quote__sign">Elena V.<b>VP Operations, Toronto</b></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="uncle-feature">
+      <svg class="uncle-svg" viewBox="0 0 200 240" role="img" aria-label="Uncle mascot reading the newspaper">
+        <g transform="translate(96,148) rotate(8)">
+          <rect x="0" y="0" width="80" height="62" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.4"/>
+          <rect x="6" y="7" width="30" height="5" fill="#1a1510"/>
+          <rect x="6" y="17" width="68" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="6" y="23" width="68" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="6" y="29" width="54" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="6" y="35" width="62" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="6" y="41" width="46" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="6" y="47" width="58" height="2" fill="#1a1510" opacity=".55"/>
+          <rect x="44" y="7" width="28" height="8" fill="#7a2418" opacity=".7"/>
+        </g>
+        <path d="M40 216 Q46 168 100 164 Q154 168 160 216 Z" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.6"/>
+        <path d="M82 168 L100 190 L118 168" fill="none" stroke="#1a1510" stroke-width="2.4"/>
+        <path d="M100 190 L86 180 L86 198 Z" fill="#7a2418" stroke="#1a1510" stroke-width="2"/>
+        <path d="M100 190 L114 180 L114 198 Z" fill="#7a2418" stroke="#1a1510" stroke-width="2"/>
+        <circle cx="100" cy="190" r="4" fill="#1a1510"/>
+        <rect x="90" y="148" width="20" height="18" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.4"/>
+        <ellipse cx="45" cy="108" rx="9" ry="13" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.4"/>
+        <ellipse cx="155" cy="108" rx="9" ry="13" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.4"/>
+        <ellipse cx="100" cy="104" rx="53" ry="58" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.8"/>
+        <path d="M52 90 Q56 46 100 44 Q144 46 148 90 Q138 66 100 64 Q62 66 52 90 Z" fill="#1a1510" opacity=".92"/>
+        <path d="M64 82 Q76 74 88 81" stroke="#1a1510" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+        <path d="M112 81 Q124 74 136 82" stroke="#1a1510" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+        <circle cx="76" cy="104" r="19" fill="rgba(255,255,255,.35)" stroke="#1a1510" stroke-width="3.2"/>
+        <circle cx="124" cy="104" r="19" fill="rgba(255,255,255,.35)" stroke="#1a1510" stroke-width="3.2"/>
+        <path d="M95 104 Q100 100 105 104" stroke="#1a1510" stroke-width="3.2" fill="none"/>
+        <line x1="57" y1="102" x2="44" y2="100" stroke="#1a1510" stroke-width="2.6"/>
+        <line x1="143" y1="102" x2="156" y2="100" stroke="#1a1510" stroke-width="2.6"/>
+        <circle cx="76" cy="105" r="4" fill="#1a1510"/>
+        <circle cx="124" cy="105" r="4" fill="#1a1510"/>
+        <ellipse class="lid" cx="76" cy="95" rx="19" ry="17" fill="#e8ddc2" stroke="#1a1510" stroke-width="3.2"/>
+        <ellipse class="lid" cx="124" cy="95" rx="19" ry="17" fill="#e8ddc2" stroke="#1a1510" stroke-width="3.2"/>
+        <path d="M100 110 Q96 122 100 124 Q104 122 100 110" fill="none" stroke="#1a1510" stroke-width="2.6" stroke-linecap="round"/>
+        <g class="stache"><path d="M62 138 Q80 124 100 136 Q120 124 138 138 Q120 152 100 144 Q80 152 62 138 Z" fill="#1a1510"/></g>
+        <path d="M88 151 Q100 158 112 151" fill="none" stroke="#1a1510" stroke-width="2.4" stroke-linecap="round"/>
+        <ellipse cx="58" cy="128" rx="9" ry="5" fill="#7a2418" opacity=".18"/>
+        <ellipse cx="142" cy="128" rx="9" ry="5" fill="#7a2418" opacity=".18"/>
+        <g class="arm">
+          <path d="M152 178 Q176 158 172 130" stroke="#1a1510" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="172" cy="126" r="9" fill="#e8ddc2" stroke="#1a1510" stroke-width="2.6"/>
+        </g>
+      </svg>
+      <div class="uncle-copy">
+        <p class="kicker">Our Editor at Large</p>
+        <h3>Sit down. <em>I will read it to you.</em></h3>
+        <p>Every newspaper needs a face. Ours is a retired editor with round glasses, a proper moustache, and strong opinions about the Oxford comma. He reads every issue before it ships.</p>
+        <p>He believes the news should be calm, clear, and kind. That is why we never use clickbait, never overstate, and always publish a correction when we get something wrong.</p>
+        <p class="uncle-copy__sign">The Uncle, Editor at Large</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quiet-cta reveal">
+    <h2 class="quiet-cta__title">One page. Every morning.<br><em>Written by machines, checked by people.</em></h2>
+    <p class="quiet-cta__sub">When you are ready, the register button at the top will take you there. One Google click and you are in.</p>
+    <a href="login.html" class="quiet-cta__link">
+      Register to receive MR News
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+    </a>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="rule-orn" aria-hidden="true"><span></span></div>
+  <div class="foot__top">
+    <div>
+      <p class="foot__logo">MR News</p>
+      <p class="foot__tag">Written by machines, checked by people</p>
+    </div>
+    <nav class="foot__cols" aria-label="Footer">
+      <div>
+        <h4>The Paper</h4>
+        <a href="#how">How It Works</a>
+        <a href="#demo">See It Read</a>
+        <a href="#features">Features</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="login.html">Register</a>
+        <a href="#" id="footReport">Report a Problem</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="#">RSS</a><a href="#">Mastodon</a><a href="#">Contact the Desk</a>
+      </div>
+    </nav>
+  </div>
+  <p class="foot__legal">
+    <span>&copy; <span data-year>2026</span> MR News. All rights reserved.</span>
+    <span>Set in Playfair, Old Standard and IM Fell. <a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
+  </p>
+</footer>
+
+    </div>
+  </div>
+</div>
+
+<!-- CAT -->
+<svg class="cat-corner" viewBox="0 0 120 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M30 70 Q26 50 34 40 L30 28 L44 34 Q52 30 60 34 L74 28 L70 40 Q78 50 74 70 Z" fill="#e8ddc2"/>
+  <circle cx="42" cy="48" r="1.4" fill="currentColor"/>
+  <circle cx="62" cy="48" r="1.4" fill="currentColor"/>
+  <path d="M48 56 Q52 60 56 56"/>
+  <path d="M74 60 Q88 58 94 48 Q98 40 92 38 Q86 36 84 44"/>
+  <path d="M30 74 Q28 82 34 86"/>
+  <path d="M50 74 L50 88M60 74 L60 88"/>
+  <path d="M20 42 L24 44M78 42 L82 44M26 52 L22 54M74 52 L78 54"/>
+</svg>
+
+<script src="app.js" defer></script>
+</body>
+</html>
+<!-- MR NEWS: Editorial Layout Component -->
