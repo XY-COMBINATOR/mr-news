@@ -1,0 +1,147 @@
+/* ================================================================
+   LOGIN PAGE — OpenClaw-style dark theme
+   ================================================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-page, oklch(13.5% 0 0));
+  color: var(--text-1, #ededed);
+  position: relative;
+}
+
+/* dot-grid background */
+.login-page::before {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 0; pointer-events: none;
+  background-image: radial-gradient(oklch(100% 0 0/.1) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000, transparent);
+}
+
+.login-card {
+  position: relative; z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  background: var(--bg-surface, oklch(17.8% 0 0));
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+@media (max-width: 480px) { .login-card { padding: 32px 24px; } }
+
+.login-brand {
+  font-family: var(--f-display, "Switzer", system-ui, sans-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--text-1, #ededed);
+  text-align: center;
+}
+.login-brand span {
+  color: var(--acc, #f5654a);
+}
+
+.login-eyebrow {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--acc, #f5654a);
+}
+
+.login-title {
+  font-family: var(--f-display, "Switzer", system-ui, sans-serif);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--text-1, #ededed);
+  line-height: 1.15;
+  text-align: center;
+}
+.login-title em {
+  font-family: var(--f-serif, "Sentient", Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--acc, #f5654a);
+}
+
+.login-desc {
+  color: var(--text-3, oklch(71.6% 0 0));
+  font-size: .9rem;
+  line-height: 1.7;
+  text-align: center;
+  max-width: 38ch;
+}
+
+.login-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border, oklch(26.9% 0 0));
+  border: none;
+}
+
+/* Google button */
+.login-google-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 20px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: .82rem;
+  font-weight: 700;
+  background: var(--acc, #f5654a);
+  color: var(--text-on, oklch(13.5% 0 0));
+  border: 1px solid var(--acc, #f5654a);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.login-google-btn:hover {
+  background: var(--acc-h, #e05540);
+  border-color: var(--acc-h, #e05540);
+}
+.login-google-btn svg {
+  width: 18px; height: 18px; flex-shrink: 0;
+}
+
+/* Ghost button */
+.login-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: .76rem;
+  font-weight: 500;
+  color: var(--text-3, oklch(71.6% 0 0));
+  text-decoration: none;
+  transition: color .15s;
+}
+.login-back:hover { color: var(--text-1, #ededed); }
+
+.login-footer {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: .68rem;
+  color: var(--text-3, oklch(71.6% 0 0));
+  text-align: center;
+  letter-spacing: .04em;
+}
+.login-footer a {
+  color: var(--acc, #f5654a);
+  text-decoration: none;
+  transition: color .15s;
+}
+.login-footer a:hover { color: var(--text-1, #ededed); }
+/* MR NEWS — Design Tokens & Visual Hierarchy */
