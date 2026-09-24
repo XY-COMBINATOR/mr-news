@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" width="500" height="120">
+  <defs>
+    <style>
+      .bg-rect { fill: transparent; }
+      .logo-text { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 64px; fill: #1a1510; letter-spacing: 2px; }
+      .sub-text { font-family: 'Special Elite', 'Courier New', monospace; font-size: 14px; fill: #7a2418; letter-spacing: 6px; text-transform: uppercase; }
+      .dot { fill: #7a2418; }
+      .line { stroke: #1a1510; stroke-width: 2; }
+      .gold-line { stroke: #8f6b2e; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect class="bg-rect" width="100%" height="100%"/>
+  <!-- Top decorative line -->
+  <line x1="20" y1="15" x2="480" y2="15" class="line"/>
+  <line x1="20" y1="19" x2="480" y2="19" class="gold-line"/>
+
+  <!-- Logo emblem / text -->
+  <g transform="translate(250, 68)" text-anchor="middle">
+    <text class="logo-text">MR<tspan class="dot">·</tspan>NEWS</text>
+  </g>
+
+  <!-- Tagline -->
+  <g transform="translate(250, 96)" text-anchor="middle">
+    <text class="sub-text">The AI Newsletter</text>
+  </g>
+
+  <!-- Bottom decorative line -->
+  <line x1="20" y1="107" x2="480" y2="107" class="gold-line"/>
+  <line x1="20" y1="111" x2="480" y2="111" class="line"/>
+</svg>
+<!-- MR NEWS: Editorial Layout Component -->
