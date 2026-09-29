@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS public.subscribers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
     name TEXT,
-    delivery_hour INT NOT NULL DEFAULT 6,
+    delivery_hour INT NOT NULL DEFAULT 22,
     topics TEXT[] DEFAULT ARRAY['policy', 'labs', 'chips', 'funding'],
     status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'unsubscribed')),
     created_at TIMESTAMPTZ DEFAULT NOW(),
