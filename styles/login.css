@@ -200,6 +200,112 @@
   border: none;
 }
 
+/* Direct Email Input Form */
+.login-email-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-input-wrap {
+  width: 100%;
+  position: relative;
+}
+
+.login-email-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-sm, 4px);
+  color: var(--text-1, #ededed);
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.login-email-input::placeholder {
+  color: var(--text-3, oklch(71.6% 0 0));
+  opacity: 0.6;
+}
+
+.login-email-input:focus {
+  border-color: var(--acc, #FF6500);
+  box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.2);
+  background: var(--bg-page, oklch(13.5% 0 0));
+}
+
+.login-email-input.input-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.login-error-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ef4444;
+  font-size: 0.78rem;
+  font-family: var(--f-mono, ui-monospace, monospace);
+}
+
+.login-or-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 6px 0;
+}
+
+.login-or-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border, oklch(26.9% 0 0));
+}
+
+.login-or-divider span {
+  position: relative;
+  background: var(--bg-surface, oklch(17.8% 0 0));
+  padding: 0 12px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text-3, oklch(71.6% 0 0));
+}
+
+/* Secondary OAuth Button */
+.login-oauth-alt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  background: transparent;
+  color: var(--text-2, oklch(87% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-sm, 4px);
+  cursor: pointer;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.login-oauth-alt-btn:hover {
+  border-color: var(--border-acc, rgba(245, 101, 74, 0.4));
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  color: var(--text-1, #ededed);
+}
+
 /* Google action button */
 .login-google-btn {
   display: inline-flex;
