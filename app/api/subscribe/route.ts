@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(req: Request) {
+  if (!supabaseAdmin) {
+    return NextResponse.json({ error: 'Database not configured.' }, { status: 503 });
+  }
   try {
     const body = await req.json();
     const { email, name, deliveryHour, topics } = body;
@@ -11,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const hour = parseInt(deliveryHour, 10);
-    const validHour = isNaN(hour) ? 6 : Math.max(0, Math.min(23, hour));
+    const validHour = isNaN(hour) ? 22 : Math.max(0, Math.min(23, hour));
     const validTopics = Array.isArray(topics) && topics.length > 0 ? topics : ['policy', 'labs', 'chips', 'funding'];
 
     const { data, error } = await supabaseAdmin

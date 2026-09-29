@@ -3,20 +3,18 @@ import React from 'react';
 import '@/styles/style.css';
 import '@/styles/login.css';
 import { Providers } from './providers';
-import { InkCursor } from './components/InkCursor';
-
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://mr-news.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
-  /* ── Core ── */
+  /* Core */
   title: {
-    default: 'MR NEWS — The AI Newsletter That Reads Itself',
+    default: 'MR NEWS: The AI Newsletter That Reads Itself',
     template: '%s | MR NEWS',
   },
   description:
-    'Six hundred sources. Seven stories. Five minutes. MR NEWS is the AI-powered daily briefing that reads the world\'s news so you don\'t have to — delivered to your inbox at the hour you choose.',
+    'Six hundred sources. Seven stories. Five minutes. MR NEWS is the AI powered daily briefing that reads the world\'s news so you don\'t have to, delivered to your inbox every night at 22:00.',
   keywords: [
     'AI newsletter',
     'daily news briefing',
@@ -34,12 +32,12 @@ export const metadata: Metadata = {
   publisher: 'MR NEWS',
   category: 'news',
 
-  /* ── Canonical ── */
+  /* Canonical */
   alternates: {
     canonical: '/',
   },
 
-  /* ── Robots ── */
+  /* Robots */
   robots: {
     index: true,
     follow: true,
@@ -52,43 +50,43 @@ export const metadata: Metadata = {
     },
   },
 
-  /* ── Open Graph ── */
+  /* Open Graph */
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
     siteName: 'MR NEWS',
-    title: 'MR NEWS — The AI Newsletter That Reads Itself',
+    title: 'MR NEWS: The AI Newsletter That Reads Itself',
     description:
-      'Six hundred sources. Seven stories. Five minutes. AI-powered daily intelligence delivered to your inbox at your chosen hour.',
+      'Six hundred sources. Seven stories. Five minutes. AI powered daily intelligence delivered to your inbox every night at 22:00.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'MR NEWS — The AI Newsletter That Reads Itself',
+        alt: 'MR NEWS: The AI Newsletter That Reads Itself',
         type: 'image/png',
       },
     ],
   },
 
-  /* ── Twitter / X Card ── */
+  /* Twitter / X Card */
   twitter: {
     card: 'summary_large_image',
     site: '@mrnewspaper',
     creator: '@mrnewspaper',
-    title: 'MR NEWS — The AI Newsletter That Reads Itself',
+    title: 'MR NEWS: The AI Newsletter That Reads Itself',
     description:
       'Six hundred sources. Seven stories. Five minutes. Sign up for your personalised AI briefing.',
     images: ['/og-image.png'],
   },
 
-  /* ── Verification (add keys after claiming in Search Console) ── */
+  /* Verification (add keys after claiming in Search Console) */
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION ?? '',
   },
 
-  /* ── App / PWA ── */
+  /* App / PWA */
   applicationName: 'MR NEWS',
   appleWebApp: {
     capable: true,
@@ -115,7 +113,7 @@ export default function RootLayout({
         url: BASE_URL,
         name: 'MR NEWS',
         description:
-          'AI-powered daily news briefing — six hundred sources distilled to seven stories, five minutes, delivered at your hour.',
+          'AI powered daily news briefing: six hundred sources distilled to seven stories, five minutes, delivered nightly at 22:00.',
         publisher: { '@id': `${BASE_URL}/#organization` },
         potentialAction: {
           '@type': 'SearchAction',
@@ -143,7 +141,7 @@ export default function RootLayout({
         '@type': 'WebPage',
         '@id': `${BASE_URL}/#webpage`,
         url: BASE_URL,
-        name: 'MR NEWS — The AI Newsletter That Reads Itself',
+        name: 'MR NEWS: The AI Newsletter That Reads Itself',
         isPartOf: { '@id': `${BASE_URL}/#website` },
         about: { '@id': `${BASE_URL}/#organization` },
         description:
@@ -168,7 +166,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://api.fontshare.com" />
@@ -176,7 +174,7 @@ export default function RootLayout({
 
         {/* Fontshare: Switzer + Sentient */}
         <link
-          href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=sentient@400i&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&f[]=sentient@400i&display=swap"
           rel="stylesheet"
         />
 
@@ -187,8 +185,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
 
         {/* Theme colour for browser chrome */}
-        <meta name="theme-color" content="#101012" />
-        <meta name="msapplication-TileColor" content="#101012" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="msapplication-TileColor" content="#1a1a1a" />
 
         {/* JSON-LD structured data */}
         <script
@@ -198,7 +196,6 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <InkCursor />
           {children}
         </Providers>
       </body>

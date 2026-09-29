@@ -36,7 +36,7 @@ export async function sendBriefingEmail({
     const { data, error } = await resend.emails.send({
       from: resendFromEmail,
       to: [toEmail],
-      subject: `MR NEWS — Daily Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`,
+      subject: `MR NEWS: Daily Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`,
       html: htmlContent,
     });
 
@@ -129,7 +129,7 @@ function generateVintageEmailHtml({
           <tr>
             <td align="center" style="padding:20px 40px;background-color:#e5deca;border-top:3px double #0f0e0b;">
               <p style="margin:0 0 10px;font-family:Georgia,serif;font-size:11px;color:#6f6a5c;">
-                MR NEWS — Written by machines, checked by people.
+                MR NEWS: Written by machines, checked by people.
               </p>
               <p style="margin:0;font-family:'Courier New',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;">
                 <a href="${unsubscribeUrl}" style="color:#7a2418;text-decoration:underline;">One-Click Unsubscribe</a>

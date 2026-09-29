@@ -1,86 +1,196 @@
-/* ================================================================
-   LOGIN PAGE — OpenClaw-style dark theme
-   ================================================================ */
+/* LOGIN & ONBOARDING PAGE: OpenClaw Dark Theme */
 
 .login-page {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
   background: var(--bg-page, oklch(13.5% 0 0));
   color: var(--text-1, #ededed);
   position: relative;
+  font-family: var(--f-body, "Switzer", system-ui, sans-serif);
 }
 
 /* dot-grid background */
 .login-page::before {
   content: '';
-  position: absolute; inset: 0;
-  z-index: 0; pointer-events: none;
-  background-image: radial-gradient(oklch(100% 0 0/.1) 1px, transparent 1.5px);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(oklch(100% 0 0 / 0.1) 1px, transparent 1.5px);
   background-size: 26px 26px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000, transparent);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000, transparent);
 }
 
+.login-topbar {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+}
+
 .login-card {
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   border: 1px solid var(--border, oklch(26.9% 0 0));
   background: var(--bg-surface, oklch(17.8% 0 0));
-  padding: 48px 40px;
+  padding: 44px 36px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  border-radius: var(--r-md, 8px);
 }
-@media (max-width: 480px) { .login-card { padding: 32px 24px; } }
+@media (max-width: 560px) {
+  .login-card {
+    padding: 32px 20px;
+    gap: 20px;
+  }
+}
+
+/* Brand header */
+.login-brand-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-emblem {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 0 16px var(--logo-glow, rgba(245, 101, 74, 0.35)));
+}
 
 .login-brand {
   font-family: var(--f-display, "Switzer", system-ui, sans-serif);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: -.01em;
+  letter-spacing: -0.01em;
   color: var(--text-1, #ededed);
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .login-brand span {
-  color: var(--acc, #f5654a);
+  color: var(--acc, #FF6500);
+}
+
+/* Steps progression indicator */
+.login-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+
+.login-step-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-3, oklch(71.6% 0 0));
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.login-step-item.active {
+  color: var(--acc, #FF6500);
+  border-color: var(--border-acc, rgba(245, 101, 74, 0.4));
+  background: var(--surf-acc, rgba(245, 101, 74, 0.12));
+}
+
+.login-step-item.completed {
+  color: var(--sea, #4fc8ae);
+}
+
+.login-step-sep {
+  display: none;
+}
+
+/* Step content container */
+.login-step-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 .login-eyebrow {
   font-family: var(--f-mono, ui-monospace, monospace);
-  font-size: .72rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: .1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--acc, #f5654a);
+  color: var(--acc, #FF6500);
+  text-align: center;
 }
 
 .login-title {
   font-family: var(--f-display, "Switzer", system-ui, sans-serif);
-  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-size: clamp(1.4rem, 4vw, 1.85rem);
   font-weight: 600;
-  letter-spacing: -.02em;
+  letter-spacing: -0.02em;
   color: var(--text-1, #ededed);
-  line-height: 1.15;
+  line-height: 1.2;
   text-align: center;
 }
 .login-title em {
   font-family: var(--f-serif, "Sentient", Georgia, serif);
   font-style: italic;
   font-weight: 400;
-  color: var(--acc, #f5654a);
+  color: var(--acc, #FF6500);
 }
 
 .login-desc {
   color: var(--text-3, oklch(71.6% 0 0));
-  font-size: .9rem;
-  line-height: 1.7;
+  font-size: 0.88rem;
+  line-height: 1.65;
   text-align: center;
-  max-width: 38ch;
+  max-width: 42ch;
+}
+
+/* Features checklist on Step 1 */
+.login-features {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-md, 6px);
+}
+
+.login-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: var(--text-2, oklch(87% 0 0));
+}
+
+.login-feature-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--acc, #FF6500);
+  flex-shrink: 0;
 }
 
 .login-divider {
@@ -90,57 +200,367 @@
   border: none;
 }
 
-/* Google button */
+/* Google action button */
 .login-google-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  min-height: 48px;
+  min-height: 50px;
   padding: 0 20px;
   font-family: var(--f-mono, ui-monospace, monospace);
-  font-size: .82rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  background: var(--acc, #f5654a);
-  color: var(--text-on, oklch(13.5% 0 0));
-  border: 1px solid var(--acc, #f5654a);
+  background: var(--acc, #FF6500);
+  color: var(--text-on, #101012);
+  border: 1px solid var(--acc, #FF6500);
+  border-radius: var(--r-sm, 4px);
   cursor: pointer;
   text-decoration: none;
-  transition: background .15s, border-color .15s;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 16px rgba(245, 101, 74, 0.25);
 }
 .login-google-btn:hover {
   background: var(--acc-h, #e05540);
   border-color: var(--acc-h, #e05540);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 101, 74, 0.35);
 }
-.login-google-btn svg {
-  width: 18px; height: 18px; flex-shrink: 0;
+.login-google-btn:active {
+  transform: translateY(0);
+}
+.login-google-btn svg.g-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.login-google-btn svg.arrow-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+.login-google-btn:hover svg.arrow-icon {
+  transform: translateX(4px);
 }
 
-/* Ghost button */
+/* Step 2 fields */
+.login-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-field-label {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2, oklch(87% 0 0));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.login-field-label span.tag {
+  color: var(--acc, #FF6500);
+  font-size: 0.68rem;
+}
+
+/* Delivery hour selection grid */
+.login-times {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+@media (max-width: 440px) {
+  .login-times {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.login-time-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-sm, 4px);
+  color: var(--text-1, #ededed);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.login-time-btn small {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--text-3, oklch(71.6% 0 0));
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.login-time-btn:hover {
+  border-color: var(--border-acc, rgba(245, 101, 74, 0.4));
+  background: var(--surf-int-h, oklch(23.9% 0 0));
+}
+.login-time-btn.active {
+  background: var(--surf-acc, rgba(245, 101, 74, 0.16));
+  border-color: var(--acc, #FF6500);
+  color: var(--acc, #FF6500);
+  box-shadow: 0 0 12px rgba(245, 101, 74, 0.2);
+}
+.login-time-btn.active small {
+  color: var(--acc, #FF6500);
+  font-weight: 600;
+}
+
+/* Topic chips selection */
+.login-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.login-topic-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-2, oklch(87% 0 0));
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.login-topic-chip:hover {
+  border-color: var(--border-acc, rgba(245, 101, 74, 0.4));
+  color: var(--text-1, #ededed);
+}
+.login-topic-chip.active {
+  background: var(--surf-acc, rgba(245, 101, 74, 0.16));
+  border-color: var(--acc, #FF6500);
+  color: var(--acc, #FF6500);
+  font-weight: 600;
+}
+.login-topic-chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Step 2 & 3 navigation actions */
+.login-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.login-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  min-height: 46px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-2, oklch(87% 0 0));
+  background: transparent;
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-sm, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.login-btn-ghost:hover {
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  color: var(--text-1, #ededed);
+}
+
+.login-btn-primary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: var(--acc, #FF6500);
+  color: var(--text-on, #101012);
+  border: 1px solid var(--acc, #FF6500);
+  border-radius: var(--r-sm, 4px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.login-btn-primary:hover {
+  background: var(--acc-h, #e05540);
+  border-color: var(--acc-h, #e05540);
+}
+.login-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Confirmation box in Step 3 */
+.login-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sea, #4fc8ae);
+  background: var(--surf-sea, rgba(79, 200, 174, 0.12));
+  border: 1px solid rgba(79, 200, 174, 0.35);
+  border-radius: 999px;
+  margin-bottom: 4px;
+}
+.login-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.login-summary-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  background: var(--bg-elev, oklch(20.5% 0 0));
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  border-radius: var(--r-md, 6px);
+}
+
+.login-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.84rem;
+}
+.login-summary-label {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-3, oklch(71.6% 0 0));
+}
+.login-summary-val {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-weight: 600;
+  color: var(--text-1, #ededed);
+}
+.login-summary-val.highlight {
+  color: var(--acc, #FF6500);
+}
+
+/* Ghost / Back navigation */
 .login-back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-family: var(--f-mono, ui-monospace, monospace);
-  font-size: .76rem;
+  font-size: 0.76rem;
   font-weight: 500;
   color: var(--text-3, oklch(71.6% 0 0));
   text-decoration: none;
-  transition: color .15s;
+  transition: color 0.15s ease;
 }
-.login-back:hover { color: var(--text-1, #ededed); }
+.login-back:hover {
+  color: var(--text-1, #ededed);
+}
 
 .login-footer {
   font-family: var(--f-mono, ui-monospace, monospace);
-  font-size: .68rem;
+  font-size: 0.68rem;
   color: var(--text-3, oklch(71.6% 0 0));
   text-align: center;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
 }
 .login-footer a {
-  color: var(--acc, #f5654a);
+  color: var(--acc, #FF6500);
   text-decoration: none;
-  transition: color .15s;
+  transition: color 0.15s;
 }
-.login-footer a:hover { color: var(--text-1, #ededed); }
+.login-footer a:hover {
+  color: var(--text-1, #ededed);
+}
+
+/* ── Delivery window display — replaces previous inline styles ───────── */
+.login-delivery-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border: 1px solid var(--border, oklch(26.9% 0 0));
+  background: rgba(255, 101, 0, 0.06);
+  border-radius: 6px;
+  width: 100%;
+}
+.login-delivery-display__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-delivery-display__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--acc, #FF6500);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(255, 101, 0, 0.6);
+}
+.login-delivery-display__time {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-1, #ededed);
+}
+.login-delivery-display__sub {
+  font-size: 0.78rem;
+  color: var(--text-3, oklch(71.6% 0 0));
+  margin-top: 2px;
+}
+.login-delivery-display__badge {
+  font-family: var(--f-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--acc, #FF6500);
+  white-space: nowrap;
+}
+
+/* Back button rendered as an inline link (development-mode skip) */
+.login-back--link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-top: -4px;
+}
+
+/* Orange accent for the 22:00 highlight in Step 3 confirmation */
+.login-desc__accent {
+  color: var(--acc, #FF6500);
+}

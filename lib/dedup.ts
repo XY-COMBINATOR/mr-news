@@ -51,6 +51,8 @@ export async function deduplicateArticles(rawArticles: RawArticle[]): Promise<Ra
 
   // 2. Cross-day deduplication against Supabase `articles_seen`
   try {
+    if (!supabaseAdmin) return uniqueArticles;
+
     const hashes = uniqueArticles.map(a => hashUrl(a.link));
     const { data: seenDb } = await supabaseAdmin
       .from('articles_seen')
@@ -81,6 +83,7 @@ export async function markArticlesSeen(articles: { link: string; title: string; 
   }));
 
   try {
+    if (!supabaseAdmin) return;
     await supabaseAdmin.from('articles_seen').upsert(rows, { onConflict: 'url_hash' });
   } catch (err) {
     console.error('[DEDUP] Error marking articles as seen in Supabase:', err);

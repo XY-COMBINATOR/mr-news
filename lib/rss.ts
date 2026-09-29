@@ -28,15 +28,15 @@ const FEEDS = [
  * Crawls configured premium RSS feeds and returns a normalized array of raw news articles.
  */
 export async function fetchRawArticles(): Promise<RawArticle[]> {
-  const articles: RawArticle[] = [];
-
   const feedPromises = FEEDS.map(async (feed) => {
     try {
       const res = await parser.parseURL(feed.url);
-      const items = res.items.slice(0, 10);
+      const items = (res.items || []).slice(0, 10);
+      const feedArticles: RawArticle[] = [];
+
       for (const item of items) {
         if (item.title && item.link) {
-          articles.push({
+          feedArticles.push({
             title: item.title.trim(),
             link: item.link.trim(),
             source: feed.source,
@@ -45,11 +45,22 @@ export async function fetchRawArticles(): Promise<RawArticle[]> {
           });
         }
       }
+
+      return feedArticles;
     } catch (err) {
       console.warn(`[RSS] Failed to fetch feed from ${feed.source}:`, err);
+      return [];
     }
   });
 
-  await Promise.allSettled(feedPromises);
+  const settled = await Promise.allSettled(feedPromises);
+  const articles: RawArticle[] = [];
+
+  for (const result of settled) {
+    if (result.status === 'fulfilled') {
+      articles.push(...result.value);
+    }
+  }
+
   return articles;
 }

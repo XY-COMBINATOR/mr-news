@@ -1,20 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-// Client for browser / public requests
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Client for browser / public requests (null when env vars are not configured)
+export const supabase: SupabaseClient | null = supabaseUrl
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Admin client for backend server routes / cron pipeline with service role key
-export const supabaseAdmin = createClient(
-  supabaseUrl,
-  supabaseServiceKey || supabaseAnonKey,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  }
-);
+export const supabaseAdmin: SupabaseClient | null = supabaseUrl
+  ? createClient(supabaseUrl, supabaseServiceKey || supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    })
+  : null;

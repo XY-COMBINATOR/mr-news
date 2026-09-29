@@ -17,6 +17,10 @@ export async function POST(req: Request) {
   }
 
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: 'Database not configured.' }, { status: 503 });
+    }
+
     const currentHour = new Date().getUTCHours();
 
     // 1. Fetch active subscribers scheduled for this UTC hour

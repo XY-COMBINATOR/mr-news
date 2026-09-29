@@ -13,14 +13,16 @@ export async function GET(req: Request) {
   let activeSubscribersCount = 0;
 
   try {
-    const { count, error } = await supabaseAdmin
-      .from('subscribers')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'active');
+    if (supabaseAdmin) {
+      const { count, error } = await supabaseAdmin
+        .from('subscribers')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'active');
 
-    if (!error) {
-      dbConnected = true;
-      activeSubscribersCount = count || 0;
+      if (!error) {
+        dbConnected = true;
+        activeSubscribersCount = count || 0;
+      }
     }
   } catch (err) {
     console.error('[STATUS_API] Supabase connection test failed:', err);

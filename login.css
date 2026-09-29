@@ -401,7 +401,7 @@ ul,ol{padding:0;list-style:none;}
 }
 .foot__back:hover{color:var(--stamp);border-color:var(--stamp);}
 
-:focus-visible{outline:2px dashed var(--stamp);outline-offset:3px;}
+:focus-visible{outline:2px solid var(--stamp);outline-offset:3px;}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
