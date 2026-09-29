@@ -12,11 +12,21 @@ export interface ProcessedStory {
 }
 
 const geminiApiKey = process.env.GEMINI_API_KEY || '';
+const groqApiKey = process.env.GROQ_API_KEY || '';
+const openrouterApiKey = process.env.OPENROUTER_API_KEY || '';
+const openaiApiKey = process.env.OPENAI_API_KEY || '';
+
 const ai = geminiApiKey ? new GoogleGenerativeAI(geminiApiKey) : null;
 
 /**
- * Sends deduplicated raw articles to Google Gemini for ranking,
- * summarization, and strategic impact analysis.
+ * Multi-AI Failover Engine:
+ * Cascades across multiple AI providers to guarantee 100% daily briefing reliability.
+ *
+ * Tier 1: Google Gemini 2.5 Flash (Primary)
+ * Tier 2: Groq high-speed LLM (Secondary Fallback)
+ * Tier 3: OpenRouter Multi-Model (Tertiary Fallback)
+ * Tier 4: OpenAI gpt-4o-mini (Quaternary Fallback)
+ * Tier 5: Algorithmic RSS Extraction (Emergency Safety Net)
  */
 export async function synthesizeBriefingWithGemini(
   articles: RawArticle[]
@@ -50,26 +60,164 @@ Candidate Articles:
 ${articlesPromptText}
 `;
 
-  try {
-    if (!ai) {
-      console.warn('[GEMINI] GEMINI_API_KEY not set. Using structured fallback synthesis.');
-      return getFallbackStoriesFromArticles(articles);
+  // ── TIER 1: Google Gemini 2.5 Flash (Primary) ────────────────────────
+  if (ai) {
+    try {
+      console.log('[AI_CASCADE] [Tier 1] Synthesizing with Google Gemini 2.5 Flash...');
+      const model = ai.getGenerativeModel({
+        model: 'gemini-2.5-flash',
+        generationConfig: {
+          responseMimeType: 'application/json',
+        },
+      });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      const parsed = parseJsonStories(text);
+      if (parsed && parsed.length > 0) {
+        console.log(`[AI_CASCADE] ✓ Tier 1 (Gemini 2.5 Flash) succeeded. Generated ${parsed.length} stories.`);
+        return parsed;
+      }
+    } catch (err: unknown) {
+      console.warn('[AI_CASCADE] ⚠️ Tier 1 (Gemini) failed. Switching to Tier 2 (Groq):', (err as Error).message);
     }
-
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    const cleanedJson = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-    const parsed = JSON.parse(cleanedJson) as ProcessedStory[];
-
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed;
-    }
-  } catch (err) {
-    console.error('[GEMINI] Error generating content with Gemini:', err);
   }
 
+  // ── TIER 2: Groq High-Speed LLM (Secondary Fallback) ─────────────────
+  if (groqApiKey) {
+    try {
+      console.log('[AI_CASCADE] [Tier 2] Synthesizing with Groq (openai/gpt-oss-120b)...');
+      const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'openai/gpt-oss-120b',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an executive news editor that responds strictly in valid JSON arrays matching the required schema.',
+            },
+            { role: 'user', content: prompt },
+          ],
+        }),
+      });
+
+      if (groqRes.ok) {
+        const groqData = await groqRes.json();
+        const content = groqData.choices?.[0]?.message?.content;
+        const parsed = parseJsonStories(content);
+        if (parsed && parsed.length > 0) {
+          console.log(`[AI_CASCADE] ✓ Tier 2 (Groq) succeeded. Generated ${parsed.length} stories.`);
+          return parsed;
+        }
+      } else {
+        console.warn(`[AI_CASCADE] Groq returned status ${groqRes.status}`);
+      }
+    } catch (err: unknown) {
+      console.warn('[AI_CASCADE] ⚠️ Tier 2 (Groq) failed. Switching to Tier 3 (OpenRouter):', (err as Error).message);
+    }
+  }
+
+  // ── TIER 3: OpenRouter Multi-Model (Tertiary Fallback) ────────────────
+  if (openrouterApiKey) {
+    try {
+      console.log('[AI_CASCADE] [Tier 3] Synthesizing with OpenRouter...');
+      const routerRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openrouterApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'qwen/qwen3.8-27b:free',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an executive news editor that responds strictly in valid JSON arrays.',
+            },
+            { role: 'user', content: prompt },
+          ],
+        }),
+      });
+
+      if (routerRes.ok) {
+        const routerData = await routerRes.json();
+        const content = routerData.choices?.[0]?.message?.content;
+        const parsed = parseJsonStories(content);
+        if (parsed && parsed.length > 0) {
+          console.log(`[AI_CASCADE] ✓ Tier 3 (OpenRouter) succeeded. Generated ${parsed.length} stories.`);
+          return parsed;
+        }
+      }
+    } catch (err: unknown) {
+      console.warn('[AI_CASCADE] ⚠️ Tier 3 (OpenRouter) failed:', (err as Error).message);
+    }
+  }
+
+  // ── TIER 4: OpenAI (Optional Direct Fallback) ────────────────────────
+  if (openaiApiKey) {
+    try {
+      console.log('[AI_CASCADE] [Tier 4] Synthesizing with OpenAI (gpt-4o-mini)...');
+      const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openaiApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          response_format: { type: 'json_object' },
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an executive news editor that outputs JSON: {"stories": [...]}',
+            },
+            { role: 'user', content: prompt },
+          ],
+        }),
+      });
+
+      if (oaiRes.ok) {
+        const oaiData = await oaiRes.json();
+        const content = oaiData.choices?.[0]?.message?.content;
+        const parsedObj = JSON.parse(content);
+        const storiesList = Array.isArray(parsedObj) ? parsedObj : parsedObj.stories;
+        if (Array.isArray(storiesList) && storiesList.length > 0) {
+          console.log(`[AI_CASCADE] ✓ Tier 4 (OpenAI) succeeded.`);
+          return storiesList as ProcessedStory[];
+        }
+      }
+    } catch (err: unknown) {
+      console.warn('[AI_CASCADE] ⚠️ Tier 4 (OpenAI) failed:', (err as Error).message);
+    }
+  }
+
+  // ── TIER 5: Algorithmic RSS Extraction (Emergency Safety Net) ────────
+  console.warn('[AI_CASCADE] ⚠️ All AI providers exhausted. Using structured RSS extraction fallback.');
   return getFallbackStoriesFromArticles(articles);
+}
+
+function parseJsonStories(raw: string): ProcessedStory[] | null {
+  if (!raw || typeof raw !== 'string') return null;
+  try {
+    const cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed as ProcessedStory[];
+    }
+  } catch (e) {
+    // If wrapped in an object like { stories: [...] }
+    try {
+      const cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const obj = JSON.parse(cleaned);
+      if (Array.isArray(obj.stories) && obj.stories.length > 0) {
+        return obj.stories as ProcessedStory[];
+      }
+    } catch {}
+  }
+  return null;
 }
 
 function getFallbackStoriesFromArticles(articles: RawArticle[]): ProcessedStory[] {
