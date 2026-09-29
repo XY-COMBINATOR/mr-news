@@ -18,8 +18,15 @@ export function generateUnsubscribeToken(email: string): string {
 export function verifyUnsubscribeToken(email: string, token: string): boolean {
   if (!email || !token) return false;
   const expectedToken = generateUnsubscribeToken(email);
-  const buf1 = Buffer.from(token);
-  const buf2 = Buffer.from(expectedToken);
-  if (buf1.length !== buf2.length) return false;
-  return crypto.timingSafeEqual(buf1, buf2);
+  return timingSafeEqualString(token, expectedToken);
+}
+
+/**
+ * Cryptographically timing-safe string comparison to protect against side-channel timing attacks.
+ */
+export function timingSafeEqualString(a: string, b: string): boolean {
+  if (!a || !b) return false;
+  const hashA = crypto.createHash('sha256').update(a).digest();
+  const hashB = crypto.createHash('sha256').update(b).digest();
+  return crypto.timingSafeEqual(hashA, hashB);
 }
