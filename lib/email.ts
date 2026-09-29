@@ -1,13 +1,36 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 import { ProcessedStory } from './gemini';
 import { generateUnsubscribeToken } from './crypto';
 
-const resendApiKey = process.env.RESEND_API_KEY || '';
-const resendFromEmail = process.env.RESEND_FROM_EMAIL || 'MR News <onboarding@resend.dev>';
+const emailUser = process.env.EMAIL_USER || '';
+const emailPass = process.env.EMAIL_PASS || '';
+const emailFrom = process.env.EMAIL_FROM || (emailUser ? `"MR News" <${emailUser}>` : '"MR News" <mrnewsbrief@gmail.com>');
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const transporter = (emailUser && emailPass)
+  ? nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: emailUser,
+        pass: emailPass,
+      },
+    })
+  : null;
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Dispatches the daily 22:00 briefing email to a subscriber via Gmail SMTP.
+ */
 export async function sendBriefingEmail({
   toEmail,
   recipientName,
@@ -20,39 +43,96 @@ export async function sendBriefingEmail({
   const token = generateUnsubscribeToken(toEmail);
   const unsubscribeUrl = `${appUrl}/api/unsubscribe?email=${encodeURIComponent(toEmail)}&token=${token}`;
 
-  const htmlContent = generateVintageEmailHtml({
+  const htmlContent = generateBriefingEmailHtml({
     email: toEmail,
     recipientName: recipientName || 'Reader',
     stories,
     unsubscribeUrl,
   });
 
-  if (!resend) {
-    console.warn(`[RESEND] RESEND_API_KEY not set. Mock email dispatch to ${toEmail}.`);
+  if (!transporter) {
+    console.warn(`[EMAIL] EMAIL_USER/EMAIL_PASS not configured. Mock dispatch to ${toEmail}.`);
     return { success: true, mock: true };
   }
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: resendFromEmail,
-      to: [toEmail],
-      subject: `MR NEWS: Daily Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`,
+    const info = await transporter.sendMail({
+      from: emailFrom,
+      to: toEmail,
+      subject: `MR NEWS: Nightly Intelligence Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`,
       html: htmlContent,
     });
 
-    if (error) {
-      console.error('[RESEND] Email send error:', error);
-      return { success: false, error };
-    }
-
-    return { success: true, data };
+    console.log(`[EMAIL] Successfully dispatched briefing to ${toEmail} (ID: ${info.messageId})`);
+    return { success: true, data: info };
   } catch (err) {
-    console.error('[RESEND] Failed to send email via Resend:', err);
+    console.error(`[EMAIL] Failed to send briefing to ${toEmail}:`, err);
     return { success: false, error: err };
   }
 }
 
-function generateVintageEmailHtml({
+/**
+ * Sends an immediate welcome confirmation email when a user subscribes.
+ */
+export async function sendWelcomeEmail({
+  toEmail,
+  recipientName,
+}: {
+  toEmail: string;
+  recipientName?: string;
+}) {
+  if (!transporter) {
+    console.warn(`[EMAIL] EMAIL_USER/EMAIL_PASS not configured. Mock welcome email to ${toEmail}.`);
+    return { success: true, mock: true };
+  }
+
+  const token = generateUnsubscribeToken(toEmail);
+  const unsubscribeUrl = `${appUrl}/api/unsubscribe?email=${encodeURIComponent(toEmail)}&token=${token}`;
+
+  let htmlContent = '';
+  try {
+    const templatePath = path.join(process.cwd(), 'welcome_email.html');
+    if (fs.existsSync(templatePath)) {
+      htmlContent = fs.readFileSync(templatePath, 'utf8');
+      htmlContent = htmlContent
+        .replace(/№\s*042/g, `№ ${Math.floor(Math.random() * 900 + 100)}`)
+        .replace(/href="#"/g, `href="${appUrl}"`);
+    }
+  } catch (e) {
+    console.warn('[EMAIL] Could not read welcome_email.html, using fallback:', e);
+  }
+
+  const safeName = escapeHtml(recipientName || 'Reader');
+
+  if (!htmlContent) {
+    htmlContent = `
+      <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #fdfbf7; border: 1px solid #e0d8cc; color: #1a1612;">
+        <h1 style="color: #0f0e0b; letter-spacing: -1px;">MR<span style="color: #ff6500;">·</span>NEWS</h1>
+        <p>Dear ${safeName},</p>
+        <p>You are officially subscribed to <strong>MR NEWS Executive Intelligence</strong>.</p>
+        <p>Your curated briefing will be dispatched every night at <strong>22:00 (10:00 PM)</strong> sharp.</p>
+        <hr style="border: none; border-top: 1px solid #e0d8cc; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #666;"><a href="${unsubscribeUrl}" style="color: #ff6500;">One-click Unsubscribe</a></p>
+      </div>
+    `;
+  }
+
+  try {
+    const info = await transporter.sendMail({
+      from: emailFrom,
+      to: toEmail,
+      subject: `Welcome to MR NEWS — Daily Briefing at 22:00`,
+      html: htmlContent,
+    });
+    console.log(`[EMAIL] Welcome email sent to ${toEmail} (ID: ${info.messageId})`);
+    return { success: true, data: info };
+  } catch (err) {
+    console.error(`[EMAIL] Failed to send welcome email to ${toEmail}:`, err);
+    return { success: false, error: err };
+  }
+}
+
+function generateBriefingEmailHtml({
   recipientName,
   stories,
   unsubscribeUrl,
@@ -73,8 +153,8 @@ function generateVintageEmailHtml({
     .map(
       (s, i) => `
     <tr>
-      <td style="padding: 16px 36px 18px; border-bottom: 1px dotted #b0a88f;">
-        <div style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 3px; color: #7a2418; text-transform: uppercase; margin-bottom: 6px;">
+      <td style="padding: 18px 36px; border-bottom: 1px dotted #b0a88f;">
+        <div style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 3px; color: #ff6500; text-transform: uppercase; margin-bottom: 6px;">
           ARTICLE ${i + 1} &nbsp;·&nbsp; ${s.category.toUpperCase()} &nbsp;·&nbsp; IMPACT ${s.impactScore}/100
         </div>
         <h2 style="margin: 0 0 8px; font-family: Georgia, serif; font-size: 20px; line-height: 1.25; color: #0f0e0b; font-weight: 700;">
@@ -83,7 +163,7 @@ function generateVintageEmailHtml({
         <p style="margin: 0 0 10px; font-family: Georgia, serif; font-size: 14px; line-height: 1.55; color: #25231d;">
           ${s.summary}
         </p>
-        <div style="font-family: Georgia, serif; font-style: italic; font-size: 13px; color: #4a3f30; background-color: #e5deca; padding: 8px 12px; border-left: 3px solid #7a2418;">
+        <div style="font-family: Georgia, serif; font-style: italic; font-size: 13px; color: #4a3f30; background-color: #e5deca; padding: 10px 14px; border-left: 3px solid #ff6500;">
           <strong>Strategic Impact:</strong> ${s.strategicImpact}
         </div>
         <div style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 1.5px; color: #6f6a5c; margin-top: 8px; text-transform: uppercase;">
@@ -101,20 +181,29 @@ function generateVintageEmailHtml({
   <meta charset="utf-8">
   <title>MR NEWS Briefing</title>
 </head>
-<body style="margin:0;padding:0;background-color:#1a1208;font-family:Georgia,serif;color:#0f0e0b;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a1208" style="background-color:#1a1208;padding:20px 0;">
+<body style="margin:0;padding:0;background-color:#101012;font-family:Georgia,serif;color:#0f0e0b;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#101012" style="background-color:#101012;padding:24px 0;">
     <tr>
       <td align="center">
-        <table role="presentation" width="620" cellpadding="0" cellspacing="0" border="0" bgcolor="#f2efe6" style="width:620px;max-width:620px;background-color:#f2efe6;border:2px solid #0f0e0b;">
+        <table role="presentation" width="620" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f2e9" style="width:620px;max-width:620px;background-color:#f5f2e9;border:1px solid #2a2824;border-radius:4px;overflow:hidden;">
           
+          <!-- TOP HEADER BANNER -->
+          <tr>
+            <td align="center" style="background-color:#1a1917;padding:12px 20px;border-bottom:2px solid #ff6500;">
+              <span style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#d4b970;">
+                ✦ &nbsp; EXECUTIVE NIGHTLY DISPATCH · 22:00 &nbsp; ✦
+              </span>
+            </td>
+          </tr>
+
           <!-- MASTHEAD -->
           <tr>
-            <td align="center" style="padding:24px 40px 16px;border-bottom:3px double #0f0e0b;">
+            <td align="center" style="padding:28px 40px 18px;border-bottom:3px double #0f0e0b;">
               <div style="font-family:Georgia,serif;font-weight:900;font-size:42px;letter-spacing:-2px;text-transform:uppercase;color:#0f0e0b;">
-                MR<span style="color:#7a2418;">·</span>NEWS
+                MR<span style="color:#ff6500;">·</span>NEWS
               </div>
-              <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#7a2418;margin-top:6px;">
-                THE DAILY BRIEFING FOR ${recipientName.toUpperCase()}
+              <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#ff6500;margin-top:6px;">
+                THE 22:00 INTELLIGENCE BRIEFING FOR ${escapeHtml(recipientName || 'Reader').toUpperCase()}
               </div>
               <div style="font-family:Georgia,serif;font-style:italic;font-size:11px;color:#4a463c;margin-top:6px;">
                 ${currentDateStr}
@@ -127,12 +216,12 @@ function generateVintageEmailHtml({
 
           <!-- FOOTER -->
           <tr>
-            <td align="center" style="padding:20px 40px;background-color:#e5deca;border-top:3px double #0f0e0b;">
-              <p style="margin:0 0 10px;font-family:Georgia,serif;font-size:11px;color:#6f6a5c;">
-                MR NEWS: Written by machines, checked by people.
+            <td align="center" style="padding:20px 40px;background-color:#e8e2d2;border-top:3px double #0f0e0b;">
+              <p style="margin:0 0 10px;font-family:Georgia,serif;font-size:11px;color:#4a463c;">
+                MR NEWS: High-signal briefing read by machines, vetted for humans. Delivered nightly at 22:00.
               </p>
               <p style="margin:0;font-family:'Courier New',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;">
-                <a href="${unsubscribeUrl}" style="color:#7a2418;text-decoration:underline;">One-Click Unsubscribe</a>
+                <a href="${unsubscribeUrl}" style="color:#ff6500;text-decoration:underline;">One-Click Unsubscribe</a>
               </p>
             </td>
           </tr>
