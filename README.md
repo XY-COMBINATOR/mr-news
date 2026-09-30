@@ -149,7 +149,31 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 👥 Hackathon Team & Credits
+## 🤖 AI Usage Disclosure (Rule 5 Compliance)
+In accordance with the *First Commit* hackathon guidelines regarding responsible AI usage:
+- **How AI was used:** AI coding assistants (Google Antigravity / Gemini) were utilized as learning and pair-programming tools for brainstorming architecture, drafting boilerplate type definitions, debugging Turbopack build nuances, and optimizing HTML email layouts.
+- **Human Leadership:** The overall product vision, system architecture (multi-AI fallback engine, deduplication pipeline, fixed 22:00 IST schedule), prompt engineering, database schema design, and security defenses were fully designed, verified, and understood by the team.
+
+---
+
+## 📚 Open Source Credits & Attributions (Rule 6 Compliance)
+We gratefully acknowledge the open-source libraries and services powering this project:
+- **Framework & Runtime:** [Next.js](https://nextjs.org/) (Vercel), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Data & Ingestion:** [rss-parser](https://github.com/rbren/rss-parser) for feed consumption, [Supabase](https://supabase.com/) for PostgreSQL storage and authentication
+- **AI Models & Inference:** [Google Generative AI SDK](https://ai.google.dev/), [OpenRouter](https://openrouter.ai/), and [Groq Cloud](https://groq.com/)
+- **Email Delivery:** [Nodemailer](https://nodemailer.com/) for SMTP transmission
+
+---
+
+## 💡 Challenges Faced & What We Learned (Rule 7 & 8 Compliance)
+1. **Multi-AI Provider Resilience:** Handling unexpected API rate limits and model deprecations. We solved this by designing a sequential fallback chain (OpenRouter ➔ Google Gemini ➔ Groq) that executes with sub-second failover.
+2. **Email Deliverability & Spam Filter Optimization:** Overcoming initial spam classification by implementing multipart MIME (HTML + plain-text fallback), adding RFC 8058 `List-Unsubscribe` headers, and eliminating hidden CSS elements.
+3. **Cross-Source Deduplication:** Different outlets cover the same breaking news with different headlines. We implemented SHA-256 hashing and fuzzy topic clustering to ensure subscribers never receive redundant stories.
+4. **Serverless Cron Execution:** Designing stateless edge API handlers that execute reliably within Vercel's execution time constraints.
+
+---
+
+## 👥 Hackathon Team
 - **Project:** MR NEWS
 - **Team / Organization:** [XY-COMBINATOR](https://github.com/XY-COMBINATOR)
-- **Built for:** AI & Automation Track
+- **Built for:** First Commit Hackathon
