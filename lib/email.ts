@@ -55,12 +55,28 @@ export async function sendBriefingEmail({
     return { success: true, mock: true };
   }
 
+  const textContent = [
+    `MR NEWS: Nightly Intelligence Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })})`,
+    `The 22:00 intelligence briefing for ${recipientName || 'Reader'}\n`,
+    ...stories.map((s, i) => `${i + 1}. ${s.headline}\n${s.summary}\nStrategic Impact: ${s.strategicImpact}\nSource: ${s.source} (${s.url})\n`),
+    `\nMR NEWS: Delivered nightly at 22:00 IST.`,
+    `Visit: ${appUrl}`,
+    `Unsubscribe: ${unsubscribeUrl}`,
+  ].join('\n');
+
   try {
     const info = await transporter.sendMail({
       from: emailFrom,
       to: toEmail,
+      replyTo: emailUser || 'mrnewsbrief@gmail.com',
       subject: `MR NEWS: Nightly Intelligence Briefing (${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`,
+      text: textContent,
       html: htmlContent,
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>, <mailto:${emailUser || 'mrnewsbrief@gmail.com'}?subject=unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        'X-Mailer': 'MR NEWS Dispatch Engine',
+      },
     });
 
     console.log(`[EMAIL] Successfully dispatched briefing to ${toEmail} (ID: ${info.messageId})`);
@@ -124,12 +140,21 @@ export async function sendWelcomeEmail({
     `;
   }
 
+  const plainTextWelcome = `Hello ${recipientName || 'Reader'},\n\nWelcome to MR NEWS. Your subscription has been confirmed.\n\nYou will receive your executive intelligence briefing every night at 22:00 IST covering the day's top 7 tech and AI developments.\n\nVisit Website: ${appUrl}\nOne-Click Unsubscribe: ${unsubscribeUrl}\n\nMR NEWS — Delivered nightly to your inbox.`;
+
   try {
     const info = await transporter.sendMail({
       from: emailFrom,
       to: toEmail,
+      replyTo: emailUser || 'mrnewsbrief@gmail.com',
       subject: `Welcome to MR NEWS — Daily Briefing at 22:00`,
+      text: plainTextWelcome,
       html: htmlContent,
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>, <mailto:${emailUser || 'mrnewsbrief@gmail.com'}?subject=unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        'X-Mailer': 'MR NEWS Dispatch Engine',
+      },
     });
     console.log(`[EMAIL] Welcome email sent to ${toEmail} (ID: ${info.messageId})`);
     return { success: true, data: info };
