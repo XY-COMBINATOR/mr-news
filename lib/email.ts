@@ -89,20 +89,27 @@ export async function sendWelcomeEmail({
   const token = generateUnsubscribeToken(toEmail);
   const unsubscribeUrl = `${appUrl}/api/unsubscribe?email=${encodeURIComponent(toEmail)}&token=${token}`;
 
+  const safeName = escapeHtml(recipientName || 'Reader');
+  const currentDateStr = new Date().toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   let htmlContent = '';
   try {
     const templatePath = path.join(process.cwd(), 'welcome_email.html');
     if (fs.existsSync(templatePath)) {
-      htmlContent = fs.readFileSync(templatePath, 'utf8');
-      htmlContent = htmlContent
-        .replace(/№\s*042/g, `№ ${Math.floor(Math.random() * 900 + 100)}`)
-        .replace(/href="#"/g, `href="${appUrl}"`);
+      htmlContent = fs.readFileSync(templatePath, 'utf8')
+        .replace(/{{RECIPIENT_NAME}}/g, safeName)
+        .replace(/{{CURRENT_DATE}}/g, currentDateStr)
+        .replace(/{{APP_URL}}/g, appUrl)
+        .replace(/{{UNSUBSCRIBE_URL}}/g, unsubscribeUrl);
     }
   } catch (e) {
     console.warn('[EMAIL] Could not read welcome_email.html, using fallback:', e);
   }
-
-  const safeName = escapeHtml(recipientName || 'Reader');
 
   if (!htmlContent) {
     htmlContent = `
