@@ -40,10 +40,10 @@ export function ClockSelector() {
           {/* 12 tick marks */}
           {Array.from({ length: 12 }, (_, i) => {
             const a  = (i * 30 * Math.PI) / 180;
-            const x1 = 90 + 72 * Math.sin(a);
-            const y1 = 90 - 72 * Math.cos(a);
-            const x2 = 90 + 81 * Math.sin(a);
-            const y2 = 90 - 81 * Math.cos(a);
+            const x1 = Math.round((90 + 72 * Math.sin(a)) * 100) / 100;
+            const y1 = Math.round((90 - 72 * Math.cos(a)) * 100) / 100;
+            const x2 = Math.round((90 + 81 * Math.sin(a)) * 100) / 100;
+            const y2 = Math.round((90 - 81 * Math.cos(a)) * 100) / 100;
             const major = i % 3 === 0;
             return (
               <line key={i}
@@ -52,6 +52,7 @@ export function ClockSelector() {
                 strokeWidth={major ? 1.5 : 1} />
             );
           })}
+
 
           {/* Cardinal labels */}
           <text x="90"  y="32"  textAnchor="middle" fontFamily="monospace" fontSize="10" fontWeight="700" fill="rgba(255,255,255,0.55)">12</text>
@@ -71,7 +72,7 @@ export function ClockSelector() {
             stroke="#FF6500"
             strokeWidth="3.5"
             strokeLinecap="round"
-            style={{ transform: `rotate(${HOUR_ANGLE}deg)` }}
+            style={{ transform: `rotate(${HOUR_ANGLE}deg)`, transformBox: 'view-box', transformOrigin: '90px 90px' }}
           />
 
           {/* Minute hand: at 12 (on-the-hour) */}

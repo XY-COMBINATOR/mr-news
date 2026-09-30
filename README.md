@@ -1,96 +1,179 @@
-# MR NEWS
+# 📰 MR NEWS — The AI Newsletter That Reads Itself
 
-The AI Newsletter That Reads Itself
+> **600+ Sources. 7 Stories. 5 Minutes.**  
+> An autonomous, hyper-curated daily intelligence briefing delivered to your inbox every night at 22:00 IST.
 
-Six hundred sources. Seven stories. Five minutes. MR NEWS is an autonomous intelligence pipeline that reads the world news so you do not have to, delivering a high signal briefing straight to subscriber inboxes every evening at 22:00.
+[![Live Demo](https://img.shields.io/badge/Demo-mr--news--ashy.vercel.app-blue?style=for-the-badge&logo=vercel)](https://mr-news-ashy.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-green?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Gemini](https://img.shields.io/badge/AI-Google_Gemini-orange?style=for-the-badge&logo=google)](https://ai.google.dev/)
 
-## Overview
+---
 
-Staying informed in technology and artificial intelligence has become exhausting. Between clickbait headlines, repetitive syndications across rival publishers, and breathless social media commentary, readers waste hours sorting signal from noise.
+## ⚡ Live Links
+- **🌐 Live Production Website:** [https://mr-news-ashy.vercel.app](https://mr-news-ashy.vercel.app)
+- **🔐 Admin Control Desk:** [https://mr-news-ashy.vercel.app/admin](https://mr-news-ashy.vercel.app/admin)
+- **📂 GitHub Repository:** [https://github.com/XY-COMBINATOR/mr-news](https://github.com/XY-COMBINATOR/mr-news)
 
-MR NEWS solves this with an autonomous editorial desk. The system continuously tracks premier global newsrooms, mathematically removes duplicate coverage, employs Google Gemini as Chief AI Editor, and formats the top seven developments into a concise briefing that takes under five minutes to read.
+---
 
-## Key Features
+## 💡 The Problem
+In an era of infinite scroll and notification fatigue, readers are inundated with thousands of sensationalized articles daily. Most newsletters are either manually compiled (slow, biased) or simple RSS dumps (noisy, redundant).
 
-1. Autonomous Multi Feed Ingestion: Continuously monitors wire services and premier journalism outlets including Reuters, Associated Press, BBC World News, Wall Street Journal, TechCrunch, Ars Technica, and MIT Technology Review.
-2. Mathematical Deduplication: Filters candidate articles using SHA256 URL hashing and token based Jaccard similarity. Stories covering the exact same event across multiple outlets are collapsed before reaching the AI model, saving tokens and eliminating repetitive coverage.
-3. Gemini Chief AI Editor: Leverages Google Gemini 1.5 Flash with structured schema prompting. Every selected story receives a two sentence factual summary, a single sentence explaining its strategic industry impact, a category tag, and an impact score from 60 to 99.
-4. Clean Nightly Dispatch: Sends a responsive dark mode executive email to subscribers every night at 22:00 via Resend. The briefing uses pure inline styles and table layouts tested for rendering fidelity across Apple Mail, Gmail, and Outlook.
-5. Interactive Web Experience: Built with Next.js App Router featuring an analog delivery clock dial, live issue archives, and subscription forms.
-6. Privacy First Security: User unsubscribes use cryptographically signed HMAC SHA256 tokens for tamper proof one click unsubscription without tracking cookies.
+## 🚀 The Solution: MR NEWS
+**MR NEWS** is a fully automated autonomous news pipeline designed to save readers 3+ hours daily:
+1. **Aggregates** top global RSS feeds across technology, AI labs, policy, chips, science, and funding.
+2. **Deduplicates** cross-source stories using SHA-256 content hashing to ensure zero repetitive coverage.
+3. **Synthesizes** the day's top 7 most impactful stories using **Multi-AI Fallback Engine** into clean, objective executive takeaways with strategic impact scores.
+4. **Delivers** an editorial-grade briefing directly to each subscriber's inbox every night at exactly **22:00 IST**.
 
-## System Architecture
+---
 
-1. Collection: The crawler collects articles across configured tier one and tier two RSS feeds.
-2. Deduplication: In batch deduplication compares article titles with word level Jaccard similarity. Articles seen in the last 30 days are cross referenced against the Supabase database.
-3. Editorial Synthesis: The filtered candidate pool is forwarded to Google Gemini. Gemini selects the seven highest impact stories and returns strictly structured JSON data.
-4. Storage: Briefing content, delivery logs, and seen article hashes are stored in PostgreSQL via Supabase.
-5. Delivery: Resend compiles the responsive HTML email template and dispatches to active subscribers scheduled for the delivery window.
+## 🏗️ Architecture & Pipeline Flow
 
-## Technology Stack
+```
+[ Top RSS Feeds ] (TechCrunch, AP, Reuters, Verge, arXiv)
+         │
+         ▼
+[ Ingestion & Normalization ]
+         │
+         ▼
+[ SHA-256 Deduplication Engine ] ──► (Filters repeated stories & noise)
+         │
+         ▼
+[ Multi-AI Synthesis Engine ] ──► Multi-Provider Fallback:
+         │                        1. OpenRouter (Primary)
+         │                        2. Google Gemini 2.5 Flash
+         │                        3. Groq Fast Inference
+         │
+         ▼
+[ Supabase PostgreSQL ] ──► Stores curated editions & subscriber preferences
+         │
+         ▼
+[ Automated Vercel Cron ] (Daily 16:30 UTC / 22:00 IST)
+         │
+         ▼
+[ Gmail SMTP Delivery Engine ] ──► Sends personalized, responsive HTML newsletter
+```
 
-1. Framework: Next.js App Router with React 18 and TypeScript
-2. Styling: Pure Vanilla CSS with sleek dark mode aesthetics
-3. Artificial Intelligence: Google Gemini API with gemini 1.5 flash
-4. Database and Backend: Supabase PostgreSQL with Row Level Security
-5. Email Delivery: Resend API with custom responsive HTML templates
-6. Scheduling: Vercel Cron triggering secured API routes
+---
 
-## Repository Structure
+## ✨ Key Features
 
-1. app: Next.js App Router pages, layouts, and API routes
-2. app/api/cron: Nightly automated briefing generation and dispatch endpoint
-3. app/api/subscribe: Public subscriber intake endpoint
-4. app/api/unsubscribe: HMAC verified one click unsubscription handler
-5. app/components: UI components including the signature analog delivery clock
-6. lib/gemini.ts: Gemini Chief AI Editor synthesis and fallback handlers
-7. lib/dedup.ts: SHA256 hashing and Jaccard similarity deduplication algorithms
-8. lib/rss.ts: Feed crawling and normalization across global newsrooms
-9. lib/email.ts: Responsive HTML newsletter generation and Resend delivery logic
-10. lib/supabase.ts: Database client and administrative queries
-11. lib/crypto.ts: Cryptographic token generation and verification
-12. supabase/schema.sql: PostgreSQL schema for subscribers, seen articles, and briefings
+### 1. 🛡️ Resilient Multi-AI Failover Architecture
+Never misses an edition. If one AI model experiences a rate limit or downtime, the pipeline automatically falls back in milliseconds:
+- **Primary:** OpenRouter Free Models
+- **Fallback 1:** Google Gemini 2.5 Flash
+- **Fallback 2:** Groq Fast Llama-3-70B
 
-## Environment Variables
+### 2. 🎯 Personalized Topic Curation
+Subscribers choose the exact verticals that matter to them:
+- `policy` — AI Regulation & Governance
+- `labs` — Breakthrough AI Lab Research
+- `chips` — Semiconductor & Hardware Supply Chains
+- `funding` — Venture Capital & Seed Rounds
+- `safety` — Alignment & Red-teaming
+- `culture` — Societal Impact
 
-Create a file named .env.local in the root directory with the following variables:
+### 3. ⏰ Guaranteed 22:00 Nightly Delivery
+Built with Vercel Cron triggers (`vercel.json`) running serverless jobs at exactly `16:30 UTC` (22:00 IST) every single night.
 
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-RESEND_API_KEY=your_resend_api_key
-RESEND_FROM_EMAIL=your_verified_sender_email
-GEMINI_API_KEY=your_gemini_api_key
-CRON_SECRET=your_secret_cron_passcode
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_random_secret_string
+### 4. 🔒 Enterprise-Grade Security
+- **Timing-Safe Authentication:** Admin passkey comparisons use cryptographic constant-time buffers to prevent timing attacks.
+- **Brute-Force Shield:** IP tracking locks out repeated invalid passkey attempts for 15 minutes.
+- **Bot Honeytraps & IP Rate Limiting:** Prevents automated form spam on subscription endpoints.
+- **Fail-Closed Secrets:** All sensitive operations reject execution if environment variables are missing.
 
-## Getting Started
+### 5. 📊 Real-Time Admin Control Desk
+Includes a protected dashboard to monitor:
+- Total & Active subscriber counts
+- Live pipeline health & database latency
+- Historical briefings sent with stories and impact metrics
+- One-click subscriber management
 
-1. Install dependencies:
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | Next.js 16 (App Router), React 18, TypeScript, Vanilla CSS |
+| **Backend & APIs** | Next.js Serverless Edge Routes, Vercel Cron Jobs |
+| **Database** | Supabase (PostgreSQL with Row Level Security) |
+| **AI / LLM** | Google Gemini Generative AI, OpenRouter API, Groq |
+| **Email Delivery** | Nodemailer (Gmail SMTP with App Passwords) |
+| **Deployment** | Vercel Serverless Platform |
+
+---
+
+## 🚦 API Reference
+
+| Endpoint | Method | Description | Auth Required |
+|---|---|---|---|
+| `/` | `GET` | Landing page & subscriber onboarding | No |
+| `/login` | `GET` | User & Admin login portal | No |
+| `/admin` | `GET` | Real-time Admin Control Desk | Passkey |
+| `/api/subscribe` | `POST` | Create new subscriber & send welcome email | Rate-Limited |
+| `/api/send-briefing` | `POST` | Trigger pipeline ingestion, synthesis & dispatch | `Bearer CRON_SECRET` |
+| `/api/cron` | `GET` | Automated cron trigger from Vercel | Vercel Cron |
+| `/api/status` | `GET` | System & database health probe | `Bearer CRON_SECRET` |
+| `/api/unsubscribe` | `GET` | One-click instant unsubscribe | Cryptographic Token |
+
+---
+
+## 🏃 Local Setup & Development
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/XY-COMBINATOR/mr-news.git
+cd mr-news
+```
+
+### 2. Install Dependencies
+```bash
 npm install
+```
 
-2. Set up the database:
-Open the SQL Editor in your Supabase project dashboard and execute the SQL queries found in supabase/schema.sql to initialize the subscribers, articles seen, and briefings tables.
+### 3. Configure Environment Variables
+Copy `.env.example` to `.env.local` and add your keys:
+```bash
+cp .env.example .env.local
+```
 
-3. Configure environment variables:
-Copy .env.example to .env.local and populate the keys for Supabase, Resend, and Google Gemini.
-
-4. Start the development server:
+### 4. Run Development Server
+```bash
 npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-5. Open the application:
-Visit http://localhost:3000 in your browser to view the interface.
+---
 
-## Production Deployment
+## 🤖 AI Usage Disclosure (Rule 5 Compliance)
+In accordance with the *First Commit* hackathon guidelines regarding responsible AI usage:
+- **How AI was used:** AI coding assistants (Google Antigravity / Gemini) were utilized as learning and pair-programming tools for brainstorming architecture, drafting boilerplate type definitions, debugging Turbopack build nuances, and optimizing HTML email layouts.
+- **Human Leadership:** The overall product vision, system architecture (multi-AI fallback engine, deduplication pipeline, fixed 22:00 IST schedule), prompt engineering, database schema design, and security defenses were fully designed, verified, and understood by the team.
 
-The project is configured for deployment on Vercel:
+---
 
-1. Import the repository into your Vercel dashboard.
-2. Add all environment variables from .env.local into the Vercel project settings.
-3. Configure the nightly cron trigger in vercel.json to call the cron endpoint every evening at 22:00 UTC.
+## 📚 Open Source Credits & Attributions (Rule 6 Compliance)
+We gratefully acknowledge the open-source libraries and services powering this project:
+- **Framework & Runtime:** [Next.js](https://nextjs.org/) (Vercel), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Data & Ingestion:** [rss-parser](https://github.com/rbren/rss-parser) for feed consumption, [Supabase](https://supabase.com/) for PostgreSQL storage and authentication
+- **AI Models & Inference:** [Google Generative AI SDK](https://ai.google.dev/), [OpenRouter](https://openrouter.ai/), and [Groq Cloud](https://groq.com/)
+- **Email Delivery:** [Nodemailer](https://nodemailer.com/) for SMTP transmission
 
-## License
+---
 
-MIT License. Open for community contributions.
+## 💡 Challenges Faced & What We Learned (Rule 7 & 8 Compliance)
+1. **Multi-AI Provider Resilience:** Handling unexpected API rate limits and model deprecations. We solved this by designing a sequential fallback chain (OpenRouter ➔ Google Gemini ➔ Groq) that executes with sub-second failover.
+2. **Email Deliverability & Spam Filter Optimization:** Overcoming initial spam classification by implementing multipart MIME (HTML + plain-text fallback), adding RFC 8058 `List-Unsubscribe` headers, and eliminating hidden CSS elements.
+3. **Cross-Source Deduplication:** Different outlets cover the same breaking news with different headlines. We implemented SHA-256 hashing and fuzzy topic clustering to ensure subscribers never receive redundant stories.
+4. **Serverless Cron Execution:** Designing stateless edge API handlers that execute reliably within Vercel's execution time constraints.
+
+---
+
+## 👥 Hackathon Team
+- **Project:** MR NEWS
+- **Team / Organization:** [XY-COMBINATOR](https://github.com/XY-COMBINATOR)
+- **Built for:** First Commit Hackathon
