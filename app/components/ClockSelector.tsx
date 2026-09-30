@@ -72,7 +72,7 @@ export function ClockSelector() {
             stroke="#FF6500"
             strokeWidth="3.5"
             strokeLinecap="round"
-            style={{ transform: `rotate(${HOUR_ANGLE}deg)` }}
+            style={{ transform: `rotate(${HOUR_ANGLE}deg)`, transformBox: 'view-box', transformOrigin: '90px 90px' }}
           />
 
           {/* Minute hand: at 12 (on-the-hour) */}
