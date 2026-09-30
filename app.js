@@ -212,3 +212,30 @@
     });
   });
 })();
+
+// Clock: make the hands and time label follow the selected delivery hour
+(function () {
+  var slots = document.getElementById('clockSlots');
+  var hourHand = document.getElementById('clockHour');
+  var minHand = document.getElementById('clockMin');
+  var timeLabel = document.getElementById('clockTime');
+  if (!slots || !hourHand || !minHand || !timeLabel) return;
+
+  function setClock(hour) {
+    hourHand.setAttribute('transform', 'rotate(' + ((hour % 12) * 30) + ' 90 90)');
+    minHand.setAttribute('transform', 'rotate(0 90 90)');
+    timeLabel.textContent = String(hour).padStart(2, '0') + ':00';
+  }
+
+  slots.addEventListener('click', function (e) {
+    var btn = e.target.closest('.slot');
+    if (!btn) return;
+    slots.querySelectorAll('.slot').forEach(function (s) {
+      s.classList.remove('active');
+    });
+    btn.classList.add('active');
+    setClock(parseInt(btn.dataset.hour, 10));
+  });
+
+  setClock(6);
+})(); 
